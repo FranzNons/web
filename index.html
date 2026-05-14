@@ -1,362 +1,398 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Santiago Navarro — Creative Director & Copywriter</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,900;1,9..40,500;1,9..40,900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400;1,9..144,600&display=swap" rel="stylesheet">
-<style>
-  /* Local brand fonts — drop new files in assets/fonts/ and register in FONT_REGISTRY (app.jsx) */
-  @font-face { font-family: 'RF Rufo'; src: url('assets/fonts/RFRufo-Regular.ttf') format('truetype'); font-weight: 400; font-display: swap; }
-  @font-face { font-family: 'RF Rufo'; src: url('assets/fonts/RFRufo-Semibold.ttf') format('truetype'); font-weight: 600; font-display: swap; }
-  @font-face { font-family: 'RF Rufo'; src: url('assets/fonts/RFRufo-Bold.ttf') format('truetype'); font-weight: 700; font-display: swap; }
-  @font-face { font-family: 'RF Rufo'; src: url('assets/fonts/RFRufo-Black.ttf') format('truetype'); font-weight: 900; font-display: swap; }
-  @font-face { font-family: 'DM Sans Local'; src: url('assets/fonts/DMSans-Regular.ttf') format('truetype'); font-weight: 400; font-display: swap; }
-  @font-face { font-family: 'DM Sans Local'; src: url('assets/fonts/DMSans-Medium.ttf') format('truetype'); font-weight: 500; font-display: swap; }
-  @font-face { font-family: 'DM Sans Local'; src: url('assets/fonts/DMSans-Bold.ttf') format('truetype'); font-weight: 700; font-display: swap; }
-  @font-face { font-family: 'DM Sans Local'; src: url('assets/fonts/DMSans-Black.ttf') format('truetype'); font-weight: 900; font-display: swap; }
-  @font-face { font-family: 'Recoleta'; src: url('assets/fonts/Recoleta-SemiBold.otf') format('opentype'); font-weight: 600; font-display: swap; }
-</style>
-<style>
-  :root {
-    --ink: #0e0e10;
-    --ink-soft: #1a1a1d;
-    --canvas: #f4f1ea;
-    --cloud: #e7e3d8;
-    --hairline: #c9c5b8;
-    --mute: #6f6c63;
-    --stone: #9c988c;
-    --signal: #ff3b1f;
-    --accent: var(--signal);
+/* =====================================================================
+ * EDITOR.JSX v2 — Edit Mode · Cmd/Ctrl+E
+ * Tabs: Tipografía · Colores · Textos · Imágenes
+ * Textos: edita SITE_CONTENT en memoria → botón Exportar descarga content.js
+ * ===================================================================== */
 
-    --display: 'Bebas Neue', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    --serif: 'Fraunces', Georgia, serif;
-    --sans: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    --mono: 'JetBrains Mono', ui-monospace, Menlo, monospace;
-  }
+const EDITOR_FONT_REGISTRY = [
+  { id:'default',   label:'Default · brand' },
+  { id:'fraunces',  label:'Fraunces · serif' },
+  { id:'recoleta',  label:'Recoleta · FEMSA' },
+  { id:'rfrufo',    label:'RF Rufo · Júrame' },
+  { id:'dmsans',    label:'DM Sans · Tónico' },
+  { id:'inter',     label:'Inter · sans' },
+  { id:'bebas',     label:'Bebas Neue · display' },
+  { id:'jetbrains', label:'JetBrains Mono' },
+];
 
-  *, *::before, *::after { box-sizing: border-box; }
-  html, body { margin:0; padding:0; height:100%; overflow:hidden; }
-  body {
-    font-family: var(--sans);
-    background: var(--canvas);
-    color: var(--ink);
-    -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
-  }
+const EDITOR_PAGE_LABELS = {
+  home:'Home', creative:'Creative', marketing:'Marketing',
+  'case-jurame':'Júrame', 'case-protect':'Protect',
+  'case-tonico':'Tónico', 'case-femsa':'FEMSA',
+};
 
-  /* App shell */
-  .stage {
-    position: fixed; inset: 0;
-    overflow: hidden;
-    background:
-      radial-gradient(1200px 700px at 80% 110%, rgba(255,59,31,0.08), transparent 60%),
-      radial-gradient(900px 600px at 5% -10%, rgba(14,14,16,0.08), transparent 60%),
-      var(--canvas);
-  }
+const EDITOR_CASE_COLORS = {
+  'case-jurame':  { label:'Júrame',  keys:['bg','ink','gold'],         defaults:{ bg:'#f2f3f0', ink:'#202d3f', gold:'#ab8d3a' } },
+  'case-protect': { label:'Protect', keys:['bg','ink','signal','deep'],defaults:{ bg:'#0054D1', ink:'#ffffff', signal:'#00DC50', deep:'#001a44' } },
+  'case-tonico':  { label:'Tónico',  keys:['bg','ink','signal'],       defaults:{ bg:'#101010', ink:'#fdfdfd', signal:'#f7f56a' } },
+  'case-femsa':   { label:'FEMSA',   keys:['bg','ink','signal','soft'],defaults:{ bg:'#cecece', ink:'#0a0a0a', signal:'#ffe944', soft:'#e5e5e5' } },
+};
 
-  /* Grain */
-  .grain {
-    position:absolute; inset:0; pointer-events:none; opacity:.5; mix-blend-mode:multiply;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.06 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
-  }
+/* Text field definitions per section */
+const TEXT_SECTIONS = [
+  { key:'home', label:'Home', fields:[
+    { f:'name_line1',    label:'Nombre línea 1',  type:'text' },
+    { f:'name_line2',    label:'Nombre línea 2',  type:'text' },
+    { f:'availability',  label:'Chip disponibilidad', type:'text' },
+    { f:'bio',           label:'Bio',             type:'textarea' },
+    { f:'email',         label:'Email',           type:'text' },
+    { f:'phone',         label:'Teléfono',        type:'text' },
+    { f:'cv_label',      label:'Label CV',        type:'text' },
+    { f:'overlay_sub',   label:'Subtítulo overlay', type:'text' },
+  ]},
+  { key:'creative', label:'Creative Director', fields:[
+    { f:'section_label', label:'Label sección',  type:'text' },
+    { f:'headline',      label:'Titular',        type:'textarea' },
+    { f:'story_p1',      label:'Historia párr. 1', type:'textarea' },
+    { f:'story_p2',      label:'Historia párr. 2', type:'textarea' },
+  ]},
+  { key:'marketing', label:'Marketing & PM', fields:[
+    { f:'section_label', label:'Label sección',  type:'text' },
+    { f:'headline',      label:'Titular',        type:'textarea' },
+    { f:'story_p1',      label:'Historia párr. 1', type:'textarea' },
+    { f:'story_p2',      label:'Historia párr. 2', type:'textarea' },
+  ]},
+  { key:'jurame', label:'Caso · Júrame', fields:[
+    { f:'label',         label:'Label cabecera', type:'text' },
+    { f:'headline',      label:'Titular',        type:'textarea' },
+    { f:'brief',         label:'Brief',          type:'textarea' },
+    { f:'rol',           label:'Rol',            type:'text' },
+    { f:'equipo',        label:'Equipo',         type:'text' },
+    { f:'entregables',   label:'Entregables',    type:'text' },
+    { f:'copy_etiqueta', label:'Copy etiqueta',  type:'textarea' },
+    { f:'stat_number',   label:'Número stat',    type:'text' },
+    { f:'stat_label',    label:'Label stat',     type:'text' },
+    { f:'lema',          label:'Lema',           type:'textarea' },
+  ]},
+  { key:'protect', label:'Caso · Protect', fields:[
+    { f:'label',         label:'Label cabecera', type:'text' },
+    { f:'headline',      label:'Titular',        type:'textarea' },
+    { f:'brief',         label:'Brief',          type:'textarea' },
+    { f:'dashboard_headline', label:'Dashboard headline', type:'text' },
+    { f:'naming_tiers',  label:'Naming tiers',   type:'text' },
+    { f:'naming_sub',    label:'Naming sub',     type:'text' },
+    { f:'stat_number',   label:'Número stat',    type:'text' },
+    { f:'stat_label',    label:'Label stat',     type:'text' },
+  ]},
+  { key:'tonico', label:'Caso · Tónico', fields:[
+    { f:'label',         label:'Label cabecera', type:'text' },
+    { f:'headline',      label:'Titular',        type:'textarea' },
+    { f:'brief',         label:'Brief',          type:'textarea' },
+    { f:'rol',           label:'Rol',            type:'text' },
+    { f:'scope',         label:'Scope',          type:'text' },
+    { f:'cadence',       label:'Cadence',        type:'text' },
+    { f:'stat_number',   label:'Número stat',    type:'text' },
+    { f:'stat_label',    label:'Label stat',     type:'text' },
+    { f:'note',          label:'Nota',           type:'textarea' },
+  ]},
+  { key:'femsa', label:'Caso · FEMSA', fields:[
+    { f:'label',         label:'Label cabecera', type:'text' },
+    { f:'headline',      label:'Titular',        type:'textarea' },
+    { f:'brief',         label:'Brief',          type:'textarea' },
+    { f:'rol',           label:'Rol',            type:'text' },
+    { f:'equipo',        label:'Equipo',         type:'text' },
+    { f:'entregables',   label:'Entregables',    type:'text' },
+    { f:'manifesto_quote', label:'Quote manifesto', type:'textarea' },
+    { f:'manifesto_source', label:'Fuente manifesto', type:'text' },
+  ]},
+];
 
-  /* Top bar */
-  .topbar {
-    position:absolute; top:0; left:0; right:0; height:56px;
-    display:flex; align-items:center; justify-content:space-between;
-    padding: 0 28px;
-    z-index: 30;
-    font-family: var(--mono);
-    font-size: 11px;
-    letter-spacing: .12em;
-    text-transform: uppercase;
-    color: var(--ink);
-  }
-  .topbar .grp { display:flex; gap:24px; align-items:center; }
-  .topbar .dot { width:6px; height:6px; border-radius:999px; background: var(--accent); display:inline-block; box-shadow:0 0 0 4px rgba(255,59,31,0.15); }
+/* ---- small sub-components ---- */
+function EdColorSwatch({ value, onChange }) {
+  return (
+    <label style={{ position:'relative', cursor:'pointer', display:'inline-block' }}>
+      <div style={{ width:28, height:28, borderRadius:6, background:value, border:'2px solid #2a2a2e' }} />
+      <input type="color" value={value} onChange={e => onChange(e.target.value)}
+        style={{ position:'absolute', inset:0, opacity:0, width:'100%', height:'100%', cursor:'pointer' }} />
+    </label>
+  );
+}
 
-  /* Bottom rail */
-  .bottombar {
-    position:absolute; bottom:0; left:0; right:0; height:48px;
-    display:flex; align-items:center; justify-content:space-between;
-    padding: 0 28px;
-    z-index: 30;
-    font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: .14em;
-    text-transform: uppercase;
-    color: var(--mute);
-  }
+/* ---- Export helper ---- */
+function exportContent(content) {
+  const json = JSON.stringify(content, null, 2);
+  const blob = new Blob([
+    `/* =====================================================================\n` +
+    ` * CONTENT.JS — Exported from Edit Mode · ${new Date().toLocaleDateString()}\n` +
+    ` * ===================================================================== */\n` +
+    `const SITE_CONTENT = ${json};\n\n` +
+    `window.SITE_CONTENT = SITE_CONTENT;\n`
+  ], { type:'text/javascript' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'content.js'; a.click();
+  URL.revokeObjectURL(url);
+}
 
-  /* Side ticks (technological frame) */
-  .tickL, .tickR {
-    position:absolute; top:80px; bottom:80px; width:14px; z-index:10;
-    pointer-events:none;
-  }
-  .tickL { left: 14px; border-left: 1px solid var(--hairline); }
-  .tickR { right: 14px; border-right: 1px solid var(--hairline); }
-  .tickL::before, .tickR::before, .tickL::after, .tickR::after {
-    content:""; position:absolute; left:0; right:0; height:1px; background: var(--hairline);
-  }
-  .tickL::before, .tickR::before { top:0; }
-  .tickL::after, .tickR::after { bottom:0; }
+/* ---- Main panel ---- */
+function EditModePanel({ currentPage, tweakState, setTweak }) {
+  const [open, setOpen]       = React.useState(false);
+  const [tab, setTab]         = React.useState('texts');
+  const [textSection, setTextSection] = React.useState('home');
+  const [toast, setToast]     = React.useState(null);
+  const [content, setContent] = React.useState(() => JSON.parse(JSON.stringify(window.SITE_CONTENT)));
 
-  /* Floating 3D-ish objects */
-  .orb {
-    position:absolute; border-radius:50%;
-    filter: blur(0.3px);
-    will-change: transform;
-  }
-  .orb.a {
-    width: 320px; height: 320px;
-    left: -80px; top: 24%;
-    background:
-      radial-gradient(circle at 30% 25%, #ffffff 0%, #ff7a5e 18%, #ff3b1f 38%, #7a0a00 75%, #2a0300 100%);
-    box-shadow: 40px 40px 80px rgba(122,10,0,0.15);
-    animation: floatA 14s ease-in-out infinite;
-  }
-  .orb.b {
-    width: 220px; height: 220px;
-    right: 4%; top: 12%;
-    background:
-      radial-gradient(circle at 30% 25%, #ffffff 0%, #d9d3c1 18%, #6a665a 55%, #16161a 100%);
-    box-shadow: -30px 40px 80px rgba(0,0,0,0.18);
-    animation: floatB 18s ease-in-out infinite;
-  }
-  .orb.c {
-    width: 140px; height: 140px;
-    right: 10%; bottom: 10%;
-    background:
-      radial-gradient(circle at 35% 30%, #ffffff 0%, #f4f1ea 30%, #c9c5b8 60%, #6f6c63 100%);
-    box-shadow: 0 24px 48px rgba(0,0,0,0.1);
-    animation: floatC 22s ease-in-out infinite;
-  }
-  .pillshape {
-    position:absolute;
-    width: 460px; height: 80px;
-    border-radius: 9999px;
-    background: linear-gradient(110deg, var(--ink) 0%, #2a2a2e 60%, #555 100%);
-    transform: rotate(-22deg);
-    left: -120px; bottom: 14%;
-    box-shadow: 40px 40px 100px rgba(0,0,0,0.18);
-    opacity: .92;
-    animation: floatA 20s ease-in-out infinite reverse;
-  }
+  /* sync content changes into window.SITE_CONTENT for live preview */
+  React.useEffect(() => {
+    window.SITE_CONTENT = content;
+  }, [content]);
 
-  @keyframes floatA {
-    0%,100% { transform: translateY(0) translateX(0) rotate(-22deg); }
-    50% { transform: translateY(-22px) translateX(14px) rotate(-22deg); }
-  }
-  @keyframes floatB {
-    0%,100% { transform: translateY(0) translateX(0); }
-    50% { transform: translateY(18px) translateX(-12px); }
-  }
-  @keyframes floatC {
-    0%,100% { transform: translateY(0) translateX(0); }
-    50% { transform: translateY(-14px) translateX(10px); }
-  }
+  /* keyboard */
+  React.useEffect(() => {
+    const h = (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'e') { e.preventDefault(); setOpen(o => !o); }
+      if (e.key === 'Escape') setOpen(false);
+    };
+    window.addEventListener('keydown', h);
+    return () => window.removeEventListener('keydown', h);
+  }, []);
 
-  /* Brand graphic floating background — separate keyframes so we can carry a per-element rotation via --brot */
-  @keyframes bgFloatA {
-    0%,100% { transform: translate(0,0) rotate(var(--brot,0deg)); }
-    50%     { transform: translate(14px,-22px) rotate(var(--brot,0deg)); }
-  }
-  @keyframes bgFloatB {
-    0%,100% { transform: translate(0,0) rotate(var(--brot,0deg)); }
-    50%     { transform: translate(-12px,18px) rotate(var(--brot,0deg)); }
-  }
-  @keyframes bgFloatC {
-    0%,100% { transform: translate(0,0) rotate(var(--brot,0deg)); }
-    50%     { transform: translate(10px,-14px) rotate(var(--brot,0deg)); }
-  }
+  const toast_ = (msg) => { setToast(msg); setTimeout(() => setToast(null), 2200); };
 
-  .bg-graphic {
-    position: absolute;
-    pointer-events: none;
-    will-change: transform, opacity;
-    transition: opacity 500ms ease;
-  }
-  .bg-graphic.a { animation: bgFloatA 18s ease-in-out infinite; }
-  .bg-graphic.b { animation: bgFloatB 22s ease-in-out infinite; }
-  .bg-graphic.c { animation: bgFloatC 26s ease-in-out infinite; }
+  /* text helpers */
+  const updateField = (section, field, value) => {
+    setContent(prev => ({
+      ...prev,
+      [section]: { ...prev[section], [field]: value }
+    }));
+  };
 
-  /* Capsule */
-  .capsule-wrap {
-    position:absolute; inset: 80px 56px 80px 56px;
-    display:flex; align-items:center; justify-content:center;
-    z-index: 20;
-  }
-  .capsule {
-    width: min(1320px, 100%);
-    height: 100%;
-    background: var(--canvas);
-    border-radius: 28px;
-    border: 1px solid var(--hairline);
-    box-shadow:
-      0 1px 0 rgba(255,255,255,0.6) inset,
-      0 30px 60px -20px rgba(0,0,0,0.18),
-      0 60px 120px -40px rgba(0,0,0,0.18);
-    overflow: hidden;
-    position: relative;
-    transform: translateZ(0);
-    /* Per-page font override — set via --page-font inline by App; cases supply their own brand-default fallback. */
-    font-family: var(--page-font, var(--sans));
-  }
-  .capsule.dark {
-    background: var(--ink);
-    color: #f4f1ea;
-    border-color: #2a2a2e;
-  }
+  /* font */
+  const setFont = (page, id) => { setTweak('fonts', { ...(tweakState?.fonts || {}), [page]: id }); toast_('Fuente guardada'); };
 
-  /* Capsule header strip (technological) */
-  .cap-head {
-    position:absolute; top:0; left:0; right:0; height:36px;
-    display:flex; align-items:center; justify-content:space-between;
-    padding: 0 18px;
-    border-bottom: 1px solid var(--hairline);
-    font-family: var(--mono);
-    font-size: 10px; letter-spacing:.14em; text-transform: uppercase;
-    color: var(--mute);
-    background: rgba(244,241,234,0.6);
-    backdrop-filter: blur(6px);
-    z-index: 5;
-  }
-  .capsule.dark .cap-head { border-color:#2a2a2e; background: rgba(14,14,16,0.6); color: var(--stone); }
-  .cap-head .lights { display:flex; gap:6px; }
-  .cap-head .lights span { width:8px; height:8px; border-radius:999px; background: var(--hairline); }
-  .cap-head .lights span:first-child { background: var(--accent); }
+  /* color */
+  const [colorOverrides, setColorOverrides] = React.useState({});
+  const getColor = (pk, ck) => colorOverrides[pk]?.[ck] ?? EDITOR_CASE_COLORS[pk]?.defaults[ck] ?? '#000';
+  const setColor = (pk, ck, v) => {
+    setColorOverrides(p => ({ ...p, [pk]: { ...(p[pk] || EDITOR_CASE_COLORS[pk].defaults), [ck]: v } }));
+    document.documentElement.style.setProperty(`--sn-${pk}-${ck}`, v);
+    toast_('Color actualizado');
+  };
 
-  /* Pages mount inside .cap-body */
-  .cap-body { position:absolute; inset: 36px 0 0 0; }
+  const mono = { fontFamily:'"JetBrains Mono",monospace' };
 
-  /* Pill button */
-  .pill {
-    display:inline-flex; align-items:center; gap: 10px;
-    height: 44px; padding: 0 22px;
-    border-radius: 9999px;
-    font-family: var(--sans); font-weight: 600; font-size: 13px;
-    letter-spacing: .02em;
-    background: var(--ink); color: #f4f1ea;
-    border: 1px solid var(--ink);
-    cursor: pointer;
-    text-decoration: none;
-    transition: transform .15s ease, opacity .15s ease, background .2s ease;
-    user-select:none;
-  }
-  .pill:active { transform: scale(.97); opacity: .85; }
-  .pill.ghost { background: transparent; color: var(--ink); border-color: var(--ink); }
-  .pill.soft { background: var(--cloud); color: var(--ink); border-color: var(--cloud); }
-  .pill.sm { height: 34px; padding: 0 14px; font-size: 11px; }
-  .pill.xs { height: 28px; padding: 0 12px; font-size: 10.5px; letter-spacing:.06em; }
-  .pill .arr { display:inline-block; transform: translateY(-1px); }
+  const tabs = [
+    { id:'texts',  label:'Textos' },
+    { id:'type',   label:'Tipografía' },
+    { id:'colors', label:'Colores' },
+    { id:'layout', label:'Layout ·· soon', disabled:true },
+  ];
 
-  /* Chip (mono) */
-  .chip {
-    display:inline-flex; align-items:center; gap: 6px;
-    height: 26px; padding: 0 10px;
-    border: 1px solid var(--hairline);
-    border-radius: 9999px;
-    font-family: var(--mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase;
-    color: var(--ink);
-    background: transparent;
-  }
+  const inputStyle = {
+    background:'#0e0e10', color:'#f4f1ea', border:'1px solid #2a2a2e',
+    borderRadius:6, fontFamily:'Inter,sans-serif', fontSize:12,
+    padding:'7px 10px', width:'100%', lineHeight:1.5,
+    outline:'none', resize:'vertical',
+  };
 
-  /* Display */
-  .display {
-    font-family: var(--display);
-    text-transform: uppercase;
-    line-height: 0.86;
-    letter-spacing: -0.005em;
-  }
+  return (
+    <>
+      {!open && (
+        <div style={{ position:'fixed', bottom:16, right:20, zIndex:9999, pointerEvents:'none',
+          ...mono, fontSize:9, letterSpacing:'.14em', textTransform:'uppercase',
+          color:'var(--mute)', opacity:.4 }}>⌘E · Edit</div>
+      )}
 
-  /* Editorial serif inline */
-  .ital { font-family: var(--serif); font-style: italic; font-weight: 400; }
+      {open && (
+        <>
+          <div onClick={() => setOpen(false)} style={{ position:'fixed', inset:0, zIndex:9000,
+            background:'rgba(14,14,16,.5)', backdropFilter:'blur(3px)' }} />
 
-  /* Page mount — no animation; html-to-image clones reset @keyframes and capture at frame 0 */
-  .page-enter { opacity: 1; }
+          <div style={{ position:'fixed', top:'50%', left:'50%', transform:'translate(-50%,-50%)',
+            zIndex:9001, width:'min(700px,94vw)', maxHeight:'85vh',
+            display:'flex', flexDirection:'column',
+            background:'#0e0e10', border:'1px solid #2a2a2e', borderRadius:16,
+            boxShadow:'0 40px 100px rgba(0,0,0,.65)', overflow:'hidden', ...mono }}>
 
-  /* Striped placeholder */
-  .stripe-ph {
-    background-image: repeating-linear-gradient(135deg, #d9d4c5 0 12px, #e9e5d8 12px 24px);
-    color: #6f6c63;
-    font-family: var(--mono); font-size: 10px; letter-spacing:.12em; text-transform: uppercase;
-    display:flex; align-items:center; justify-content:center;
-  }
+            {/* header */}
+            <div style={{ padding:'13px 18px', borderBottom:'1px solid #2a2a2e',
+              display:'flex', alignItems:'center', justifyContent:'space-between', flexShrink:0 }}>
+              <div style={{ display:'flex', alignItems:'center', gap:10 }}>
+                <span style={{ width:8, height:8, borderRadius:99, background:'var(--accent)',
+                  display:'inline-block', boxShadow:'0 0 0 4px rgba(255,59,31,.2)' }} />
+                <span style={{ fontSize:10, letterSpacing:'.16em', textTransform:'uppercase', color:'#f4f1ea' }}>
+                  EDIT MODE · {EDITOR_PAGE_LABELS[currentPage] || currentPage}
+                </span>
+              </div>
+              <div style={{ display:'flex', gap:8 }}>
+                <button onClick={() => { exportContent(content); toast_('content.js descargado ✓'); }}
+                  style={{ background:'var(--accent)', border:'none', color:'#fff',
+                    ...mono, fontSize:9, letterSpacing:'.12em', padding:'5px 12px',
+                    borderRadius:9999, cursor:'pointer', textTransform:'uppercase', fontWeight:600 }}>
+                  ↓ Exportar content.js
+                </button>
+                <button onClick={() => setOpen(false)} style={{ background:'transparent',
+                  border:'1px solid #2a2a2e', color:'#9c988c', ...mono,
+                  fontSize:9, letterSpacing:'.1em', padding:'4px 10px',
+                  borderRadius:9999, cursor:'pointer', textTransform:'uppercase' }}>ESC</button>
+              </div>
+            </div>
 
-  /* Marquee */
-  .marquee {
-    overflow: hidden; position: relative;
-    border-top: 1px solid var(--hairline);
-    border-bottom: 1px solid var(--hairline);
-    background: var(--canvas);
-  }
-  .marquee-track {
-    display: inline-flex;
-    gap: 56px;
-    padding: 14px 0;
-    animation: marquee 40s linear infinite;
-    white-space: nowrap;
-    font-family: var(--display);
-    text-transform: uppercase;
-    font-size: 28px;
-    color: var(--ink);
-    align-items:center;
-  }
-  .marquee-track .sep { color: var(--accent); }
-  @keyframes marquee {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
-  }
+            {/* tabs */}
+            <div style={{ display:'flex', borderBottom:'1px solid #2a2a2e', flexShrink:0 }}>
+              {tabs.map(t => (
+                <button key={t.id} onClick={() => !t.disabled && setTab(t.id)} style={{
+                  flex:1, padding:'10px 0', background:tab===t.id?'#1a1a1d':'transparent',
+                  border:'none', borderBottom:tab===t.id?'2px solid var(--accent)':'2px solid transparent',
+                  color:t.disabled?'#2a2a2e':(tab===t.id?'#f4f1ea':'#6f6c63'),
+                  ...mono, fontSize:9, letterSpacing:'.13em', textTransform:'uppercase',
+                  cursor:t.disabled?'not-allowed':'pointer' }}>{t.label}</button>
+              ))}
+            </div>
 
-  /* Scroll inside capsule areas */
-  .scroll {
-    overflow-y: auto;
-    scrollbar-width: thin;
-    scrollbar-color: var(--hairline) transparent;
-  }
-  .scroll::-webkit-scrollbar { width: 6px; }
-  .scroll::-webkit-scrollbar-thumb { background: var(--hairline); border-radius: 999px; }
+            {/* body */}
+            <div style={{ flex:1, overflowY:'auto', padding:'0',
+              scrollbarWidth:'thin', scrollbarColor:'#2a2a2e transparent', display:'flex' }}>
 
-  /* Utility */
-  .mono { font-family: var(--mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; }
-  .hr { height:1px; background: var(--hairline); border:0; margin:0; }
-  .underline-link { color: inherit; text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+              {/* ── TEXTOS ── */}
+              {tab === 'texts' && (
+                <>
+                  {/* section nav sidebar */}
+                  <div style={{ width:140, flexShrink:0, borderRight:'1px solid #2a2a2e',
+                    display:'flex', flexDirection:'column', overflowY:'auto' }}>
+                    {TEXT_SECTIONS.map(s => (
+                      <button key={s.key} onClick={() => setTextSection(s.key)} style={{
+                        padding:'10px 14px', background:textSection===s.key?'#1a1a1d':'transparent',
+                        border:'none', borderLeft:textSection===s.key?'2px solid var(--accent)':'2px solid transparent',
+                        color:textSection===s.key?'#f4f1ea':'#6f6c63',
+                        ...mono, fontSize:9, letterSpacing:'.1em', textTransform:'uppercase',
+                        cursor:'pointer', textAlign:'left' }}>{s.label}</button>
+                    ))}
+                  </div>
 
-  /* Portrait stripe placeholder */
-  .portrait {
-    width: 100%; height: 100%;
-    background:
-      linear-gradient(180deg, rgba(0,0,0,0.0) 60%, rgba(0,0,0,0.45) 100%),
-      repeating-linear-gradient(115deg, #2a2a2e 0 6px, #1a1a1d 6px 14px);
-    position: relative;
-  }
-  .portrait .label {
-    position:absolute; left:14px; bottom:14px;
-    font-family: var(--mono); font-size: 10px; letter-spacing:.16em;
-    color: #f4f1ea; text-transform: uppercase;
-    opacity: .9;
-  }
+                  {/* fields */}
+                  <div style={{ flex:1, overflowY:'auto', padding:'18px',
+                    scrollbarWidth:'thin', scrollbarColor:'#2a2a2e transparent' }}>
+                    {TEXT_SECTIONS.filter(s => s.key === textSection).map(section => (
+                      <div key={section.key} style={{ display:'flex', flexDirection:'column', gap:14 }}>
+                        <div style={{ fontSize:9, letterSpacing:'.15em', color:'var(--accent)',
+                          textTransform:'uppercase', marginBottom:4 }}>// {section.label}</div>
+                        {section.fields.map(field => (
+                          <div key={field.f}>
+                            <div style={{ fontSize:9, letterSpacing:'.1em', color:'#6f6c63',
+                              textTransform:'uppercase', marginBottom:5 }}>{field.label}</div>
+                            {field.type === 'textarea'
+                              ? <textarea
+                                  value={content[section.key]?.[field.f] || ''}
+                                  onChange={e => updateField(section.key, field.f, e.target.value)}
+                                  rows={3}
+                                  style={{ ...inputStyle }}
+                                />
+                              : <input
+                                  type="text"
+                                  value={content[section.key]?.[field.f] || ''}
+                                  onChange={e => updateField(section.key, field.f, e.target.value)}
+                                  style={{ ...inputStyle }}
+                                />
+                            }
+                          </div>
+                        ))}
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
 
-  /* Scenes, used in case studies */
-  .scene-tonico { --canvas:#0a0a0c; --ink:#fffaf0; --cloud:#1a1a1d; --hairline:#2a2a2e; --mute:#9c988c; --accent:#ffd24a; }
-  .scene-modulo { --canvas:#fdfaf3; --ink:#0c2a3e; --cloud:#e3eef5; --hairline:#bcd0dc; --mute:#506a7a; --accent:#ff5a3d; }
-  .scene-arc    { --canvas:#eee9df; --ink:#2b2520; --cloud:#dcd5c5; --hairline:#bdb6a3; --mute:#766f63; --accent:#3a6a4f; }
-</style>
-</head>
-<body>
-  <div id="root"></div>
+              {/* ── TIPOGRAFÍA ── */}
+              {tab === 'type' && (
+                <div style={{ flex:1, overflowY:'auto', padding:'18px',
+                  scrollbarWidth:'thin', scrollbarColor:'#2a2a2e transparent' }}>
+                  <div style={{ display:'flex', flexDirection:'column', gap:18 }}>
+                    <div style={{ fontSize:9, letterSpacing:'.15em', color:'#6f6c63', textTransform:'uppercase' }}>
+                      // Fuente activa · {EDITOR_PAGE_LABELS[currentPage]}
+                    </div>
+                    <div style={{ padding:'12px 14px', background:'#1a1a1d', border:'1px solid #2a2a2e', borderRadius:8 }}>
+                      <div style={{ fontSize:9, color:'var(--accent)', letterSpacing:'.12em', textTransform:'uppercase', marginBottom:8 }}>Página actual</div>
+                      <select value={tweakState?.fonts?.[currentPage] || 'default'}
+                        onChange={e => setFont(currentPage, e.target.value)}
+                        style={{ background:'#0e0e10', color:'#f4f1ea', border:'1px solid #2a2a2e',
+                          borderRadius:6, ...mono, fontSize:10, padding:'7px 10px', cursor:'pointer', width:'100%' }}>
+                        {EDITOR_FONT_REGISTRY.map(f => <option key={f.id} value={f.id}>{f.label}</option>)}
+                      </select>
+                    </div>
+                    <div style={{ fontSize:9, letterSpacing:'.14em', color:'#6f6c63', textTransform:'uppercase' }}>// Todas las páginas</div>
+                    {Object.entries(EDITOR_PAGE_LABELS).map(([p, label]) => (
+                      <div key={p} style={{ display:'grid', gridTemplateColumns:'110px 1fr', gap:10, alignItems:'center' }}>
+                        <span style={{ fontSize:9, letterSpacing:'.1em', color:'#9c988c', textTransform:'uppercase' }}>{label}</span>
+                        <select value={tweakState?.fonts?.[p] || 'default'} onChange={e => setFont(p, e.target.value)}
+                          style={{ background:'#0e0e10', color:'#f4f1ea', border:'1px solid #2a2a2e',
+                            borderRadius:6, ...mono, fontSize:9, padding:'5px 8px', cursor:'pointer', width:'100%' }}>
+                          {EDITOR_FONT_REGISTRY.map(f => <option key={f.id} value={f.id}>{f.label}</option>)}
+                        </select>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
 
-  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
-  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
-  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+              {/* ── COLORES ── */}
+              {tab === 'colors' && (
+                <div style={{ flex:1, overflowY:'auto', padding:'18px',
+                  scrollbarWidth:'thin', scrollbarColor:'#2a2a2e transparent' }}>
+                  <div style={{ display:'flex', flexDirection:'column', gap:22 }}>
+                    <div>
+                      <div style={{ fontSize:9, letterSpacing:'.15em', color:'#6f6c63', textTransform:'uppercase', marginBottom:10 }}>// Accent global</div>
+                      <div style={{ display:'flex', alignItems:'center', gap:12 }}>
+                        <EdColorSwatch value={tweakState?.accent || '#ff3b1f'}
+                          onChange={v => { setTweak('accent', v); toast_('Accent actualizado'); }} />
+                        <div style={{ display:'flex', gap:6, flexWrap:'wrap' }}>
+                          {['#ff3b1f','#ffd24a','#3a6a4f','#ff5a3d','#1151ff','#ed1aa0','#00DC50','#f7f56a'].map(col => (
+                            <button key={col} onClick={() => { setTweak('accent', col); toast_('Accent actualizado'); }}
+                              style={{ width:22, height:22, borderRadius:99, background:col, border:'2px solid',
+                                borderColor:tweakState?.accent===col?'#f4f1ea':'transparent', cursor:'pointer', padding:0 }} />
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                    <div style={{ height:1, background:'#2a2a2e' }} />
+                    {Object.entries(EDITOR_CASE_COLORS).map(([pk, cfg]) => (
+                      <div key={pk}>
+                        <div style={{ fontSize:9, letterSpacing:'.13em', color:'#9c988c', textTransform:'uppercase', marginBottom:10 }}>// {cfg.label}</div>
+                        <div style={{ display:'flex', flexWrap:'wrap', gap:14 }}>
+                          {cfg.keys.map(ck => (
+                            <div key={ck} style={{ display:'flex', alignItems:'center', gap:7 }}>
+                              <EdColorSwatch value={getColor(pk, ck)} onChange={v => setColor(pk, ck, v)} />
+                              <span style={{ fontSize:9, letterSpacing:'.1em', color:'#6f6c63', textTransform:'uppercase' }}>{ck}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
 
-  <script type="text/babel" src="tweaks-panel.jsx"></script>
-  <script type="text/babel" src="pages.jsx"></script>
-  <script type="text/babel" src="cases.jsx"></script>
-  <script type="text/babel" src="editor.jsx"></script>
-  <script type="text/babel" src="app.jsx"></script>
-</body>
-</html>
+              {/* ── LAYOUT soon ── */}
+              {tab === 'layout' && (
+                <div style={{ flex:1, display:'flex', flexDirection:'column', alignItems:'center',
+                  justifyContent:'center', gap:10, color:'#3a3a3e' }}>
+                  <div style={{ fontSize:32 }}>⬡</div>
+                  <div style={{ fontSize:9, letterSpacing:'.16em', textTransform:'uppercase' }}>Layout editor · coming soon</div>
+                </div>
+              )}
+            </div>
+
+            {/* footer */}
+            <div style={{ padding:'9px 18px', borderTop:'1px solid #2a2a2e',
+              display:'flex', justifyContent:'space-between', alignItems:'center', flexShrink:0 }}>
+              <span style={{ fontSize:9, letterSpacing:'.1em', color:'#3a3a3e', textTransform:'uppercase' }}>
+                Los cambios de texto son en vivo · Exporta content.js y súbelo a GitHub para publicar
+              </span>
+              <span style={{ fontSize:9, letterSpacing:'.1em', color:'#3a3a3e', textTransform:'uppercase' }}>v2.0</span>
+            </div>
+          </div>
+        </>
+      )}
+
+      {toast && (
+        <div style={{ position:'fixed', bottom:28, left:'50%', transform:'translateX(-50%)',
+          zIndex:9999, background:'#f4f1ea', color:'#0e0e10',
+          ...mono, fontSize:10, letterSpacing:'.14em', textTransform:'uppercase',
+          padding:'8px 20px', borderRadius:9999,
+          boxShadow:'0 8px 32px rgba(0,0,0,.3)', pointerEvents:'none' }}>{toast}</div>
+      )}
+    </>
+  );
+}
+
+window.EditModePanel = EditModePanel;
