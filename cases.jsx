@@ -9,7 +9,7 @@ const FOOT_H = 56;
 function CaseJurame({ go }) {
   const c = { bg:'#f2f3f0', ink:'#202d3f', gold:'#ab8d3a' };
   return (
-    <div className="page-enter" style={{position:'absolute', inset:0, display:'flex', flexDirection:'column', background:c.bg, color:c.ink, fontFamily:'var(--page-font, Fraunces, Georgia, serif)', overflow:'hidden'}}>
+    <div className="page-enter" style={{position:'absolute', inset:0, display:'flex', flexDirection:'column', background:c.bg, color:c.ink, fontFamily:'var(--page-font, "RF Rufo", Georgia, serif)', overflow:'hidden'}}>
       {/* background graphics moved to the stage — see BRAND_GRAPHICS in app.jsx */}
 
       {/* HEADER */}
@@ -18,7 +18,7 @@ function CaseJurame({ go }) {
           <div style={{fontFamily:'JetBrains Mono, monospace', fontSize:10, letterSpacing:'.18em', textTransform:'uppercase', color:c.gold, marginBottom:8}}>
             Caso · 03 / Mezcal Júrame · 2023 — Presente
           </div>
-          <h2 style={{fontFamily:'Fraunces, serif', fontWeight:400, fontStyle:'italic', fontSize:'clamp(38px, 4.2vw, 60px)', lineHeight:.98, margin:0, color:c.ink}}>
+          <h2 style={{fontFamily:'"RF Rufo", serif', fontWeight:700, fontSize:'clamp(38px, 4.2vw, 60px)', lineHeight:.98, margin:0, color:c.ink}}>
             Un mezcal <span style={{color:c.gold}}>que jura</span>, no que promete.
           </h2>
         </div>
@@ -59,7 +59,7 @@ function CaseJurame({ go }) {
               ['Juramento de la Eternidad','añejo']
             ].map(([n, d]) =>
               <div key={n} style={{padding:'8px 12px', border:`1px solid ${c.ink}33`, background:'#fff'}}>
-                <div style={{fontFamily:'Fraunces, serif', fontStyle:'italic', fontSize:15, lineHeight:1}}>{n}</div>
+                <div style={{fontFamily:'"RF Rufo", serif', fontWeight:600, fontSize:15, lineHeight:1}}>{n}</div>
                 <div style={{fontFamily:'JetBrains Mono, monospace', fontSize:9, letterSpacing:'.16em', textTransform:'uppercase', color:c.gold, marginTop:3}}>{d}</div>
               </div>
             )}
@@ -70,7 +70,7 @@ function CaseJurame({ go }) {
           <div style={{position:'relative', background:c.ink, color:c.bg, overflow:'hidden', padding:'20px 22px', display:'flex', flexDirection:'column', justifyContent:'space-between'}}>
             <img src="assets/jurame/agave.png" alt="" style={{position:'absolute', right:-30, bottom:-20, width:240, opacity:.22, filter:'brightness(2.5)'}}/>
             <div style={{fontFamily:'JetBrains Mono, monospace', fontSize:10, letterSpacing:'.18em', textTransform:'uppercase', color:c.gold}}>Fig. 01 — Copy de etiqueta</div>
-            <div style={{fontFamily:'Fraunces, serif', fontStyle:'italic', fontSize:'clamp(18px, 1.9vw, 26px)', lineHeight:1.25, position:'relative', zIndex:2}}>
+            <div style={{fontFamily:'"RF Rufo", serif', fontWeight:400, fontSize:'clamp(18px, 1.9vw, 26px)', lineHeight:1.25, position:'relative', zIndex:2}}>
               “Destilado por manos que saben esperar.<br/>
               Embotellado por quienes <span style={{color:c.gold}}>juraron no apurarse.</span>”
             </div>
@@ -83,14 +83,14 @@ function CaseJurame({ go }) {
             <div style={{padding:'14px 16px', background:'#fff', border:`1px solid ${c.ink}22`, display:'flex', flexDirection:'column', justifyContent:'space-between'}}>
               <div style={{fontFamily:'JetBrains Mono, monospace', fontSize:9, letterSpacing:'.16em', textTransform:'uppercase', color:c.gold}}>Resultado</div>
               <div>
-                <div style={{fontFamily:'Fraunces, serif', fontSize:44, lineHeight:.9, color:c.ink}}>+62<span style={{color:c.gold}}>%</span></div>
+                <div style={{fontFamily:'"RF Rufo", serif', fontWeight:900, fontSize:44, lineHeight:.9, color:c.ink}}>+62<span style={{color:c.gold}}>%</span></div>
                 <div style={{fontFamily:'JetBrains Mono, monospace', fontSize:9, letterSpacing:'.14em', textTransform:'uppercase', color:'#6f6c63', marginTop:4}}>Venta directa · primer año</div>
               </div>
             </div>
             <div style={{padding:'14px 16px', background:c.gold, color:c.ink, position:'relative', overflow:'hidden'}}>
               <img src="assets/jurame/corazon.png" alt="" style={{position:'absolute', right:-10, top:-6, width:90, opacity:.28}}/>
               <div style={{fontFamily:'JetBrains Mono, monospace', fontSize:9, letterSpacing:'.16em', textTransform:'uppercase'}}>Lema</div>
-              <div style={{fontFamily:'Fraunces, serif', fontStyle:'italic', fontSize:20, lineHeight:1.1, marginTop:12, position:'relative'}}>
+              <div style={{fontFamily:'"RF Rufo", serif', fontWeight:600, fontSize:20, lineHeight:1.1, marginTop:12, position:'relative'}}>
                 Quien jura, no presume — <br/>cumple.
               </div>
             </div>
