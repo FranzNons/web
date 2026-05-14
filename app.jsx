@@ -105,6 +105,13 @@ function App() {
     setKey(k => k+1);
   };
 
+  // Expose state to editor.jsx
+  React.useEffect(() => {
+    window.__tweakState  = t;
+    window.__currentPage = page;
+    window.__setTweak    = setTweak;
+  }, [t, page]);
+
   // Keyboard navigation
   React.useEffect(() => {
     const onKey = (e) => {
