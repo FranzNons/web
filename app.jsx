@@ -107,10 +107,8 @@ function App() {
 
   // Expose state to editor.jsx
   React.useEffect(() => {
-    window.__tweakState  = t;
     window.__currentPage = page;
-    window.__setTweak    = setTweak;
-  }, [t, page]);
+  }, [page]);
 
   // Keyboard navigation
   React.useEffect(() => {
@@ -293,6 +291,11 @@ function App() {
           </div>
         </TweakSection>
       </TweaksPanel>
+
+      {/* Edit Mode Panel — Cmd/Ctrl+E to toggle */}
+      {typeof EditModePanel !== 'undefined' && (
+        <EditModePanel currentPage={page} tweakState={t} setTweak={setTweak} />
+      )}
     </div>
   );
 }
