@@ -41,6 +41,7 @@ const TEXT_DEFS = [
     { f:'email',        label:'Email',          type:'text' },
     { f:'phone',        label:'Telefono',       type:'text' },
     { f:'cv_label',     label:'Label CV',       type:'text' },
+    { f:'overlay_display', label:'Overlay display',  type:'text' },
     { f:'overlay_sub',  label:'Overlay sub',    type:'text' },
   ]},
   { key:'creative', label:'Creative', fields:[
