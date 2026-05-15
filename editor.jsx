@@ -120,6 +120,44 @@ function EditModePanel({ currentPage, tweakState, setTweak }) {
   const [content, setContent] = React.useState(() => JSON.parse(JSON.stringify(window.SITE_CONTENT)));
   const [colorOv, setColorOv] = React.useState({});
 
+  const IMG_SLOTS = [
+    { key:'portrait',    label:'Home Portrait',   hint:'Foto de perfil. Recomendado 4:5.' },
+    { key:'jurame_img',  label:'Jurame imagen',   hint:'Imagen en panel derecho del caso.' },
+    { key:'protect_img', label:'Protect imagen',  hint:'Imagen en panel derecho del caso.' },
+    { key:'tonico_img',  label:'Tonico imagen',   hint:'Imagen en panel derecho del caso.' },
+    { key:'femsa_img',   label:'FEMSA imagen',    hint:'Imagen editorial de la fundacion.' },
+  ];
+
+  const [imgs, setImgs] = React.useState(() => {
+    const obj = {};
+    try {
+      ['portrait','jurame_img','protect_img','tonico_img','femsa_img'].forEach(k => {
+        const v = localStorage.getItem('sn_img_' + k);
+        if (v) obj[k] = v;
+      });
+    } catch(e) {}
+    return obj;
+  });
+
+  const saveImg = (key, file) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const dataUrl = e.target.result;
+      try { localStorage.setItem('sn_img_' + key, dataUrl); } catch(ex) {}
+      setImgs(prev => ({ ...prev, [key]: dataUrl }));
+      if (key === 'portrait') window.__snPortrait = dataUrl;
+      msg('Imagen guardada');
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const clearImg = (key) => {
+    try { localStorage.removeItem('sn_img_' + key); } catch(e) {}
+    setImgs(prev => { const n = {...prev}; delete n[key]; return n; });
+    if (key === 'portrait') window.__snPortrait = null;
+    msg('Imagen eliminada');
+  };
+
   React.useEffect(() => { window.SITE_CONTENT = content; }, [content]);
 
   React.useEffect(() => {
@@ -156,6 +194,7 @@ function EditModePanel({ currentPage, tweakState, setTweak }) {
     { id:'texts',  label:'Textos' },
     { id:'type',   label:'Tipografia' },
     { id:'colors', label:'Colores' },
+    { id:'images', label:'Imagenes' },
   ];
 
   if (!open) return (
@@ -326,6 +365,56 @@ function EditModePanel({ currentPage, tweakState, setTweak }) {
               </div>
             </div>
           )}
+        </div>
+
+          {tab === 'images' && (
+            <div style={{ flex:1, overflowY:'auto', padding:'18px',
+              scrollbarWidth:'thin', scrollbarColor:'#2a2a2e transparent' }}>
+              <div style={{ fontSize:9, color:'#6f6c63', letterSpacing:'.12em', textTransform:'uppercase', marginBottom:14 }}>
+                Las imagenes se guardan en este navegador. Para que todos las vean, sube el archivo a assets/ en GitHub con el mismo nombre.
+              </div>
+              <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
+                {IMG_SLOTS.map(slot => {
+                  const inputRef = React.createRef();
+                  return (
+                    <div key={slot.key} style={{ display:'grid', gridTemplateColumns:'72px 1fr', gap:12,
+                      padding:'12px 14px', background:'#1a1a1d', border:'1px solid #2a2a2e', borderRadius:8, alignItems:'center' }}>
+                      <div onClick={() => inputRef.current && inputRef.current.click()}
+                        style={{ width:72, height:54, borderRadius:4, overflow:'hidden',
+                          background: imgs[slot.key] ? 'transparent' : '#0e0e10',
+                          border:'1px solid #2a2a2e', cursor:'pointer',
+                          display:'flex', alignItems:'center', justifyContent:'center' }}>
+                        {imgs[slot.key]
+                          ? <img src={imgs[slot.key]} alt="" style={{ width:'100%', height:'100%', objectFit:'cover' }} />
+                          : <span style={{ fontSize:20, color:'#3a3a3e' }}>+</span>}
+                      </div>
+                      <div>
+                        <div style={{ fontSize:9, letterSpacing:'.12em', color:'#f4f1ea', textTransform:'uppercase', marginBottom:3 }}>{slot.label}</div>
+                        <div style={{ fontSize:11, color:'#6f6c63', lineHeight:1.4, marginBottom:8, fontFamily:'Inter, sans-serif' }}>{slot.hint}</div>
+                        <div style={{ display:'flex', gap:6 }}>
+                          <button onClick={() => inputRef.current && inputRef.current.click()}
+                            style={{ background:'transparent', border:'1px solid #3a3a3e', color:'#9c988c',
+                              fontFamily:mono, fontSize:8, letterSpacing:'.12em', padding:'4px 10px',
+                              borderRadius:9999, cursor:'pointer', textTransform:'uppercase' }}>
+                            {imgs[slot.key] ? 'Cambiar' : 'Subir'}
+                          </button>
+                          {imgs[slot.key] && (
+                            <button onClick={() => clearImg(slot.key)}
+                              style={{ background:'transparent', border:'1px solid #3a3a3e', color:'#6f6c63',
+                                fontFamily:mono, fontSize:8, letterSpacing:'.12em', padding:'4px 10px',
+                                borderRadius:9999, cursor:'pointer', textTransform:'uppercase' }}>Eliminar</button>
+                          )}
+                        </div>
+                        <input ref={inputRef} type="file" accept="image/*" style={{ display:'none' }}
+                          onChange={e => e.target.files[0] && saveImg(slot.key, e.target.files[0])} />
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
         </div>
 
         <div style={{ padding:'9px 18px', borderTop:'1px solid #2a2a2e',
