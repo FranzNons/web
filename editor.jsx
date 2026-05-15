@@ -1,4 +1,4 @@
-/* editor.jsx v2 - Edit Mode - Cmd/Ctrl+E */
+/* editor.jsx v3 - Edit Mode - Cmd/Ctrl+E */
 
 const EDITOR_FONT_OPTIONS = [
   { id:'default',   label:'Default brand' },
@@ -24,16 +24,24 @@ const EDITOR_COLORS = {
   'case-femsa':   { label:'FEMSA',   keys:['bg','ink','signal','soft'], defaults:{ bg:'#cecece', ink:'#0a0a0a', signal:'#ffe944', soft:'#e5e5e5' } },
 };
 
+const IMG_SLOTS = [
+  { key:'portrait',    label:'Home Portrait',  hint:'Foto de perfil. Recomendado 4:5.' },
+  { key:'jurame_img',  label:'Jurame imagen',  hint:'Imagen en panel derecho del caso.' },
+  { key:'protect_img', label:'Protect imagen', hint:'Imagen en panel derecho del caso.' },
+  { key:'tonico_img',  label:'Tonico imagen',  hint:'Imagen en panel derecho del caso.' },
+  { key:'femsa_img',   label:'FEMSA imagen',   hint:'Imagen editorial de la fundacion.' },
+];
+
 const TEXT_DEFS = [
   { key:'home', label:'Home', fields:[
-    { f:'name_line1',   label:'Nombre 1',    type:'text' },
-    { f:'name_line2',   label:'Nombre 2',    type:'text' },
+    { f:'name_line1',   label:'Nombre 1',       type:'text' },
+    { f:'name_line2',   label:'Nombre 2',       type:'text' },
     { f:'availability', label:'Disponibilidad', type:'text' },
-    { f:'bio',          label:'Bio',         type:'area' },
-    { f:'email',        label:'Email',       type:'text' },
-    { f:'phone',        label:'Telefono',    type:'text' },
-    { f:'cv_label',     label:'Label CV',    type:'text' },
-    { f:'overlay_sub',  label:'Overlay sub', type:'text' },
+    { f:'bio',          label:'Bio',            type:'area' },
+    { f:'email',        label:'Email',          type:'text' },
+    { f:'phone',        label:'Telefono',       type:'text' },
+    { f:'cv_label',     label:'Label CV',       type:'text' },
+    { f:'overlay_sub',  label:'Overlay sub',    type:'text' },
   ]},
   { key:'creative', label:'Creative', fields:[
     { f:'section_label', label:'Label seccion', type:'text' },
@@ -48,37 +56,37 @@ const TEXT_DEFS = [
     { f:'story_p2',      label:'Historia p2',   type:'area' },
   ]},
   { key:'jurame', label:'Jurame', fields:[
-    { f:'label',           label:'Label cabecera', type:'text' },
-    { f:'headline',        label:'Titular',        type:'area' },
-    { f:'brief',           label:'Brief',          type:'area' },
-    { f:'rol',             label:'Rol',            type:'text' },
-    { f:'equipo',          label:'Equipo',         type:'text' },
-    { f:'entregables',     label:'Entregables',    type:'text' },
-    { f:'copy_etiqueta',   label:'Copy etiqueta',  type:'area' },
-    { f:'stat_number',     label:'Numero stat',    type:'text' },
-    { f:'stat_label',      label:'Label stat',     type:'text' },
-    { f:'lema',            label:'Lema',           type:'area' },
+    { f:'label',         label:'Label cabecera', type:'text' },
+    { f:'headline',      label:'Titular',        type:'area' },
+    { f:'brief',         label:'Brief',          type:'area' },
+    { f:'rol',           label:'Rol',            type:'text' },
+    { f:'equipo',        label:'Equipo',         type:'text' },
+    { f:'entregables',   label:'Entregables',    type:'text' },
+    { f:'copy_etiqueta', label:'Copy etiqueta',  type:'area' },
+    { f:'stat_number',   label:'Numero stat',    type:'text' },
+    { f:'stat_label',    label:'Label stat',     type:'text' },
+    { f:'lema',          label:'Lema',           type:'area' },
   ]},
   { key:'protect', label:'Protect', fields:[
-    { f:'label',              label:'Label cabecera',    type:'text' },
-    { f:'headline',           label:'Titular',           type:'area' },
-    { f:'brief',              label:'Brief',             type:'area' },
-    { f:'dashboard_headline', label:'Dashboard headline',type:'text' },
-    { f:'naming_tiers',       label:'Naming tiers',      type:'text' },
-    { f:'naming_sub',         label:'Naming sub',        type:'text' },
-    { f:'stat_number',        label:'Numero stat',       type:'text' },
-    { f:'stat_label',         label:'Label stat',        type:'text' },
+    { f:'label',              label:'Label cabecera',     type:'text' },
+    { f:'headline',           label:'Titular',            type:'area' },
+    { f:'brief',              label:'Brief',              type:'area' },
+    { f:'dashboard_headline', label:'Dashboard headline', type:'text' },
+    { f:'naming_tiers',       label:'Naming tiers',       type:'text' },
+    { f:'naming_sub',         label:'Naming sub',         type:'text' },
+    { f:'stat_number',        label:'Numero stat',        type:'text' },
+    { f:'stat_label',         label:'Label stat',         type:'text' },
   ]},
   { key:'tonico', label:'Tonico', fields:[
-    { f:'label',      label:'Label cabecera', type:'text' },
-    { f:'headline',   label:'Titular',        type:'area' },
-    { f:'brief',      label:'Brief',          type:'area' },
-    { f:'rol',        label:'Rol',            type:'text' },
-    { f:'scope',      label:'Scope',          type:'text' },
-    { f:'cadence',    label:'Cadence',        type:'text' },
-    { f:'stat_number',label:'Numero stat',    type:'text' },
-    { f:'stat_label', label:'Label stat',     type:'text' },
-    { f:'note',       label:'Nota',           type:'area' },
+    { f:'label',       label:'Label cabecera', type:'text' },
+    { f:'headline',    label:'Titular',        type:'area' },
+    { f:'brief',       label:'Brief',          type:'area' },
+    { f:'rol',         label:'Rol',            type:'text' },
+    { f:'scope',       label:'Scope',          type:'text' },
+    { f:'cadence',     label:'Cadence',        type:'text' },
+    { f:'stat_number', label:'Numero stat',    type:'text' },
+    { f:'stat_label',  label:'Label stat',     type:'text' },
+    { f:'note',        label:'Nota',           type:'area' },
   ]},
   { key:'femsa', label:'FEMSA', fields:[
     { f:'label',            label:'Label cabecera',   type:'text' },
@@ -94,7 +102,7 @@ const TEXT_DEFS = [
 
 function exportContent(content) {
   const json = JSON.stringify(content, null, 2);
-  const src = '/* CONTENT.JS - Exported ' + new Date().toLocaleDateString() + ' */\nconst SITE_CONTENT = ' + json + ';\n\nwindow.SITE_CONTENT = SITE_CONTENT;\n';
+  const src = '/* CONTENT.JS */\nconst SITE_CONTENT = ' + json + ';\n\nwindow.SITE_CONTENT = SITE_CONTENT;\n';
   const blob = new Blob([src], { type:'text/javascript' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -112,51 +120,62 @@ function EdSwatch({ value, onChange }) {
   );
 }
 
+function ImgSlot({ slot, value, onUpload, onClear, mono }) {
+  const ref = React.useRef();
+  return (
+    <div style={{ display:'grid', gridTemplateColumns:'72px 1fr', gap:12,
+      padding:'12px 14px', background:'#1a1a1d', border:'1px solid #2a2a2e',
+      borderRadius:8, alignItems:'center' }}>
+      <div onClick={() => ref.current.click()}
+        style={{ width:72, height:54, borderRadius:4, overflow:'hidden',
+          background: value ? 'transparent' : '#0e0e10',
+          border:'1px solid #2a2a2e', cursor:'pointer',
+          display:'flex', alignItems:'center', justifyContent:'center' }}>
+        {value
+          ? <img src={value} alt="" style={{ width:'100%', height:'100%', objectFit:'cover' }} />
+          : <span style={{ fontSize:20, color:'#3a3a3e' }}>+</span>}
+      </div>
+      <div>
+        <div style={{ fontSize:9, letterSpacing:'.12em', color:'#f4f1ea', textTransform:'uppercase', marginBottom:3 }}>{slot.label}</div>
+        <div style={{ fontSize:11, color:'#6f6c63', lineHeight:1.4, marginBottom:8, fontFamily:'Inter, sans-serif' }}>{slot.hint}</div>
+        <div style={{ display:'flex', gap:6 }}>
+          <button onClick={() => ref.current.click()}
+            style={{ background:'transparent', border:'1px solid #3a3a3e', color:'#9c988c',
+              fontFamily:mono, fontSize:8, letterSpacing:'.12em', padding:'4px 10px',
+              borderRadius:9999, cursor:'pointer', textTransform:'uppercase' }}>
+            {value ? 'Cambiar' : 'Subir'}
+          </button>
+          {value && (
+            <button onClick={onClear}
+              style={{ background:'transparent', border:'1px solid #3a3a3e', color:'#6f6c63',
+                fontFamily:mono, fontSize:8, letterSpacing:'.12em', padding:'4px 10px',
+                borderRadius:9999, cursor:'pointer', textTransform:'uppercase' }}>Eliminar</button>
+          )}
+        </div>
+        <input ref={ref} type="file" accept="image/*" style={{ display:'none' }}
+          onChange={e => e.target.files[0] && onUpload(e.target.files[0])} />
+      </div>
+    </div>
+  );
+}
+
 function EditModePanel({ currentPage, tweakState, setTweak }) {
-  const [open, setOpen]     = React.useState(false);
-  const [tab, setTab]       = React.useState('texts');
+  const [open, setOpen]       = React.useState(false);
+  const [tab, setTab]         = React.useState('texts');
   const [section, setSection] = React.useState('home');
-  const [toast, setToast]   = React.useState(null);
+  const [toast, setToast]     = React.useState(null);
   const [content, setContent] = React.useState(() => JSON.parse(JSON.stringify(window.SITE_CONTENT)));
   const [colorOv, setColorOv] = React.useState({});
-
-  const IMG_SLOTS = [
-    { key:'portrait',    label:'Home Portrait',   hint:'Foto de perfil. Recomendado 4:5.' },
-    { key:'jurame_img',  label:'Jurame imagen',   hint:'Imagen en panel derecho del caso.' },
-    { key:'protect_img', label:'Protect imagen',  hint:'Imagen en panel derecho del caso.' },
-    { key:'tonico_img',  label:'Tonico imagen',   hint:'Imagen en panel derecho del caso.' },
-    { key:'femsa_img',   label:'FEMSA imagen',    hint:'Imagen editorial de la fundacion.' },
-  ];
-
-  const [imgs, setImgs] = React.useState(() => {
+  const [imgs, setImgs]       = React.useState(() => {
     const obj = {};
     try {
-      ['portrait','jurame_img','protect_img','tonico_img','femsa_img'].forEach(k => {
-        const v = localStorage.getItem('sn_img_' + k);
-        if (v) obj[k] = v;
+      IMG_SLOTS.forEach(s => {
+        const v = localStorage.getItem('sn_img_' + s.key);
+        if (v) obj[s.key] = v;
       });
     } catch(e) {}
     return obj;
   });
-
-  const saveImg = (key, file) => {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const dataUrl = e.target.result;
-      try { localStorage.setItem('sn_img_' + key, dataUrl); } catch(ex) {}
-      setImgs(prev => ({ ...prev, [key]: dataUrl }));
-      if (key === 'portrait') window.__snPortrait = dataUrl;
-      msg('Imagen guardada');
-    };
-    reader.readAsDataURL(file);
-  };
-
-  const clearImg = (key) => {
-    try { localStorage.removeItem('sn_img_' + key); } catch(e) {}
-    setImgs(prev => { const n = {...prev}; delete n[key]; return n; });
-    if (key === 'portrait') window.__snPortrait = null;
-    msg('Imagen eliminada');
-  };
 
   React.useEffect(() => { window.SITE_CONTENT = content; }, [content]);
 
@@ -180,15 +199,38 @@ function EditModePanel({ currentPage, tweakState, setTweak }) {
     msg('Fuente guardada');
   };
 
-  const getCol = (pk, ck) => colorOv[pk] && colorOv[pk][ck] ? colorOv[pk][ck] : (EDITOR_COLORS[pk] ? EDITOR_COLORS[pk].defaults[ck] : '#000');
+  const getCol = (pk, ck) =>
+    (colorOv[pk] && colorOv[pk][ck]) ? colorOv[pk][ck] : (EDITOR_COLORS[pk] ? EDITOR_COLORS[pk].defaults[ck] : '#000');
+
   const setCol = (pk, ck, v) => {
     setColorOv(p => ({ ...p, [pk]: { ...(p[pk] || EDITOR_COLORS[pk].defaults), [ck]: v } }));
     document.documentElement.style.setProperty('--sn-' + pk + '-' + ck, v);
     msg('Color actualizado');
   };
 
+  const uploadImg = (key, file) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try { localStorage.setItem('sn_img_' + key, e.target.result); } catch(ex) {}
+      setImgs(prev => ({ ...prev, [key]: e.target.result }));
+      msg('Imagen guardada');
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const clearImg = (key) => {
+    try { localStorage.removeItem('sn_img_' + key); } catch(e) {}
+    setImgs(prev => { const n = {...prev}; delete n[key]; return n; });
+    msg('Imagen eliminada');
+  };
+
   const mono = '"JetBrains Mono", monospace';
-  const inputBase = { background:'#0e0e10', color:'#f4f1ea', border:'1px solid #2a2a2e', borderRadius:6, fontFamily:'Inter, sans-serif', fontSize:12, padding:'7px 10px', width:'100%', lineHeight:1.5, outline:'none', boxSizing:'border-box' };
+  const inputBase = {
+    background:'#0e0e10', color:'#f4f1ea', border:'1px solid #2a2a2e',
+    borderRadius:6, fontFamily:'Inter, sans-serif', fontSize:12,
+    padding:'7px 10px', width:'100%', lineHeight:1.5,
+    outline:'none', boxSizing:'border-box',
+  };
 
   const tabs = [
     { id:'texts',  label:'Textos' },
@@ -212,16 +254,14 @@ function EditModePanel({ currentPage, tweakState, setTweak }) {
         zIndex:9001, width:'min(700px, 94vw)', maxHeight:'85vh',
         display:'flex', flexDirection:'column',
         background:'#0e0e10', border:'1px solid #2a2a2e', borderRadius:16,
-        boxShadow:'0 40px 100px rgba(0,0,0,.65)', overflow:'hidden',
-        fontFamily:mono }}>
+        boxShadow:'0 40px 100px rgba(0,0,0,.65)', overflow:'hidden', fontFamily:mono }}>
 
+        {/* header */}
         <div style={{ padding:'13px 18px', borderBottom:'1px solid #2a2a2e',
           display:'flex', alignItems:'center', justifyContent:'space-between', flexShrink:0 }}>
           <div style={{ display:'flex', alignItems:'center', gap:10 }}>
             <span style={{ width:8, height:8, borderRadius:99, background:'var(--accent)', display:'inline-block' }} />
-            <span style={{ fontSize:10, letterSpacing:'.14em', textTransform:'uppercase', color:'#f4f1ea' }}>
-              EDIT MODE
-            </span>
+            <span style={{ fontSize:10, letterSpacing:'.14em', textTransform:'uppercase', color:'#f4f1ea' }}>EDIT MODE</span>
           </div>
           <div style={{ display:'flex', gap:8 }}>
             <button onClick={() => { exportContent(content); msg('content.js descargado'); }}
@@ -230,13 +270,14 @@ function EditModePanel({ currentPage, tweakState, setTweak }) {
                 borderRadius:9999, cursor:'pointer', textTransform:'uppercase', fontWeight:600 }}>
               Exportar content.js
             </button>
-            <button onClick={() => setOpen(false)} style={{ background:'transparent',
-              border:'1px solid #2a2a2e', color:'#9c988c', fontFamily:mono,
-              fontSize:9, letterSpacing:'.1em', padding:'4px 10px',
-              borderRadius:9999, cursor:'pointer', textTransform:'uppercase' }}>Cerrar</button>
+            <button onClick={() => setOpen(false)}
+              style={{ background:'transparent', border:'1px solid #2a2a2e', color:'#9c988c',
+                fontFamily:mono, fontSize:9, letterSpacing:'.1em', padding:'4px 10px',
+                borderRadius:9999, cursor:'pointer', textTransform:'uppercase' }}>Cerrar</button>
           </div>
         </div>
 
+        {/* tabs */}
         <div style={{ display:'flex', borderBottom:'1px solid #2a2a2e', flexShrink:0 }}>
           {tabs.map(t => (
             <button key={t.id} onClick={() => setTab(t.id)} style={{
@@ -245,13 +286,15 @@ function EditModePanel({ currentPage, tweakState, setTweak }) {
               border:'none',
               borderBottom: tab === t.id ? '2px solid var(--accent)' : '2px solid transparent',
               color: tab === t.id ? '#f4f1ea' : '#6f6c63',
-              fontFamily:mono, fontSize:9, letterSpacing:'.13em', textTransform:'uppercase',
-              cursor:'pointer' }}>{t.label}</button>
+              fontFamily:mono, fontSize:9, letterSpacing:'.13em',
+              textTransform:'uppercase', cursor:'pointer' }}>{t.label}</button>
           ))}
         </div>
 
+        {/* body - all tabs live here */}
         <div style={{ flex:1, overflow:'hidden', display:'flex' }}>
 
+          {/* TEXTOS */}
           {tab === 'texts' && (
             <React.Fragment>
               <div style={{ width:130, flexShrink:0, borderRight:'1px solid #2a2a2e',
@@ -263,18 +306,16 @@ function EditModePanel({ currentPage, tweakState, setTweak }) {
                     border:'none',
                     borderLeft: section === s.key ? '2px solid var(--accent)' : '2px solid transparent',
                     color: section === s.key ? '#f4f1ea' : '#6f6c63',
-                    fontFamily:mono, fontSize:9, letterSpacing:'.1em', textTransform:'uppercase',
-                    cursor:'pointer', textAlign:'left', width:'100%' }}>{s.label}</button>
+                    fontFamily:mono, fontSize:9, letterSpacing:'.1em',
+                    textTransform:'uppercase', cursor:'pointer', textAlign:'left', width:'100%' }}>{s.label}</button>
                 ))}
               </div>
-
               <div style={{ flex:1, overflowY:'auto', padding:'18px',
                 scrollbarWidth:'thin', scrollbarColor:'#2a2a2e transparent' }}>
                 {TEXT_DEFS.filter(s => s.key === section).map(sec => (
                   <div key={sec.key} style={{ display:'flex', flexDirection:'column', gap:14 }}>
-                    <div style={{ fontSize:9, letterSpacing:'.14em', color:'var(--accent)', textTransform:'uppercase', marginBottom:4 }}>
-                      {sec.label}
-                    </div>
+                    <div style={{ fontSize:9, letterSpacing:'.14em', color:'var(--accent)',
+                      textTransform:'uppercase', marginBottom:4 }}>{sec.label}</div>
                     {sec.fields.map(field => (
                       <div key={field.f}>
                         <div style={{ fontSize:9, letterSpacing:'.1em', color:'#6f6c63',
@@ -301,6 +342,7 @@ function EditModePanel({ currentPage, tweakState, setTweak }) {
             </React.Fragment>
           )}
 
+          {/* TIPOGRAFIA */}
           {tab === 'type' && (
             <div style={{ flex:1, overflowY:'auto', padding:'18px',
               scrollbarWidth:'thin', scrollbarColor:'#2a2a2e transparent' }}>
@@ -325,20 +367,22 @@ function EditModePanel({ currentPage, tweakState, setTweak }) {
             </div>
           )}
 
+          {/* COLORES */}
           {tab === 'colors' && (
             <div style={{ flex:1, overflowY:'auto', padding:'18px',
               scrollbarWidth:'thin', scrollbarColor:'#2a2a2e transparent' }}>
               <div style={{ display:'flex', flexDirection:'column', gap:20 }}>
                 <div>
-                  <div style={{ fontSize:9, letterSpacing:'.14em', color:'#6f6c63', textTransform:'uppercase', marginBottom:10 }}>
-                    Accent global
-                  </div>
+                  <div style={{ fontSize:9, letterSpacing:'.14em', color:'#6f6c63',
+                    textTransform:'uppercase', marginBottom:10 }}>Accent global</div>
                   <div style={{ display:'flex', alignItems:'center', gap:10 }}>
-                    <EdSwatch value={(tweakState && tweakState.accent) ? tweakState.accent : '#ff3b1f'}
+                    <EdSwatch
+                      value={(tweakState && tweakState.accent) ? tweakState.accent : '#ff3b1f'}
                       onChange={v => { setTweak('accent', v); msg('Accent actualizado'); }} />
                     <div style={{ display:'flex', gap:6, flexWrap:'wrap' }}>
                       {['#ff3b1f','#ffd24a','#3a6a4f','#ff5a3d','#1151ff','#ed1aa0','#00DC50','#f7f56a'].map(col => (
-                        <button key={col} onClick={() => { setTweak('accent', col); msg('Accent actualizado'); }}
+                        <button key={col}
+                          onClick={() => { setTweak('accent', col); msg('Accent actualizado'); }}
                           style={{ width:22, height:22, borderRadius:99, background:col,
                             border: (tweakState && tweakState.accent === col) ? '2px solid #f4f1ea' : '2px solid transparent',
                             cursor:'pointer', padding:0 }} />
@@ -349,14 +393,14 @@ function EditModePanel({ currentPage, tweakState, setTweak }) {
                 <div style={{ height:1, background:'#2a2a2e' }} />
                 {Object.entries(EDITOR_COLORS).map(([pk, cfg]) => (
                   <div key={pk}>
-                    <div style={{ fontSize:9, letterSpacing:'.12em', color:'#9c988c', textTransform:'uppercase', marginBottom:8 }}>
-                      {cfg.label}
-                    </div>
+                    <div style={{ fontSize:9, letterSpacing:'.12em', color:'#9c988c',
+                      textTransform:'uppercase', marginBottom:8 }}>{cfg.label}</div>
                     <div style={{ display:'flex', flexWrap:'wrap', gap:12 }}>
                       {cfg.keys.map(ck => (
                         <div key={ck} style={{ display:'flex', alignItems:'center', gap:6 }}>
                           <EdSwatch value={getCol(pk, ck)} onChange={v => setCol(pk, ck, v)} />
-                          <span style={{ fontSize:9, letterSpacing:'.1em', color:'#6f6c63', textTransform:'uppercase' }}>{ck}</span>
+                          <span style={{ fontSize:9, letterSpacing:'.1em', color:'#6f6c63',
+                            textTransform:'uppercase' }}>{ck}</span>
                         </div>
                       ))}
                     </div>
@@ -365,65 +409,42 @@ function EditModePanel({ currentPage, tweakState, setTweak }) {
               </div>
             </div>
           )}
-        </div>
 
+          {/* IMAGENES */}
           {tab === 'images' && (
             <div style={{ flex:1, overflowY:'auto', padding:'18px',
               scrollbarWidth:'thin', scrollbarColor:'#2a2a2e transparent' }}>
-              <div style={{ fontSize:9, color:'#6f6c63', letterSpacing:'.12em', textTransform:'uppercase', marginBottom:14 }}>
-                Las imagenes se guardan en este navegador. Para que todos las vean, sube el archivo a assets/ en GitHub con el mismo nombre.
+              <div style={{ fontSize:9, color:'#6f6c63', letterSpacing:'.12em',
+                textTransform:'uppercase', marginBottom:14, lineHeight:1.5 }}>
+                Las imagenes se guardan en este navegador.
+                Para que todos las vean, sube el archivo a assets/ en GitHub.
               </div>
               <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
-                {IMG_SLOTS.map(slot => {
-                  const inputRef = React.createRef();
-                  return (
-                    <div key={slot.key} style={{ display:'grid', gridTemplateColumns:'72px 1fr', gap:12,
-                      padding:'12px 14px', background:'#1a1a1d', border:'1px solid #2a2a2e', borderRadius:8, alignItems:'center' }}>
-                      <div onClick={() => inputRef.current && inputRef.current.click()}
-                        style={{ width:72, height:54, borderRadius:4, overflow:'hidden',
-                          background: imgs[slot.key] ? 'transparent' : '#0e0e10',
-                          border:'1px solid #2a2a2e', cursor:'pointer',
-                          display:'flex', alignItems:'center', justifyContent:'center' }}>
-                        {imgs[slot.key]
-                          ? <img src={imgs[slot.key]} alt="" style={{ width:'100%', height:'100%', objectFit:'cover' }} />
-                          : <span style={{ fontSize:20, color:'#3a3a3e' }}>+</span>}
-                      </div>
-                      <div>
-                        <div style={{ fontSize:9, letterSpacing:'.12em', color:'#f4f1ea', textTransform:'uppercase', marginBottom:3 }}>{slot.label}</div>
-                        <div style={{ fontSize:11, color:'#6f6c63', lineHeight:1.4, marginBottom:8, fontFamily:'Inter, sans-serif' }}>{slot.hint}</div>
-                        <div style={{ display:'flex', gap:6 }}>
-                          <button onClick={() => inputRef.current && inputRef.current.click()}
-                            style={{ background:'transparent', border:'1px solid #3a3a3e', color:'#9c988c',
-                              fontFamily:mono, fontSize:8, letterSpacing:'.12em', padding:'4px 10px',
-                              borderRadius:9999, cursor:'pointer', textTransform:'uppercase' }}>
-                            {imgs[slot.key] ? 'Cambiar' : 'Subir'}
-                          </button>
-                          {imgs[slot.key] && (
-                            <button onClick={() => clearImg(slot.key)}
-                              style={{ background:'transparent', border:'1px solid #3a3a3e', color:'#6f6c63',
-                                fontFamily:mono, fontSize:8, letterSpacing:'.12em', padding:'4px 10px',
-                                borderRadius:9999, cursor:'pointer', textTransform:'uppercase' }}>Eliminar</button>
-                          )}
-                        </div>
-                        <input ref={inputRef} type="file" accept="image/*" style={{ display:'none' }}
-                          onChange={e => e.target.files[0] && saveImg(slot.key, e.target.files[0])} />
-                      </div>
-                    </div>
-                  );
-                })}
+                {IMG_SLOTS.map(slot => (
+                  <ImgSlot
+                    key={slot.key}
+                    slot={slot}
+                    value={imgs[slot.key] || null}
+                    onUpload={file => uploadImg(slot.key, file)}
+                    onClear={() => clearImg(slot.key)}
+                    mono={mono}
+                  />
+                ))}
               </div>
             </div>
           )}
 
-        </div>
+        </div>{/* end body */}
 
+        {/* footer */}
         <div style={{ padding:'9px 18px', borderTop:'1px solid #2a2a2e',
           display:'flex', justifyContent:'space-between', flexShrink:0 }}>
           <span style={{ fontSize:9, color:'#3a3a3e', textTransform:'uppercase', letterSpacing:'.1em' }}>
-            Edita textos en vivo. Exporta content.js y subelo a GitHub para publicar.
+            Edita en vivo. Exporta content.js y subelo a GitHub para publicar.
           </span>
         </div>
-      </div>
+
+      </div>{/* end panel */}
 
       {toast && (
         <div style={{ position:'fixed', bottom:28, left:'50%', transform:'translateX(-50%)',
