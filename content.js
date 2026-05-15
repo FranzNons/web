@@ -13,6 +13,7 @@ const SITE_CONTENT = {
     phone: "+52 644 447 9443",
     cv_label: "CV — English · 2026",
     overlay_sub: "Naming · Narrative · Concept",
+    overlay_display: "Brand\nVoice",
     portrait_label: "Portrait — replace with hero photo · 4:5 · Monterrey 2026",
   },
 
