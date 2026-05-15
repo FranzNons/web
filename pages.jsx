@@ -49,9 +49,13 @@ function HomePage({ go }) {
         </div>
       </div>
       <div style={{ position:'relative', overflow:'hidden' }}>
-        <div className="portrait">
-          <div className="label">{c.portrait_label}</div>
-        </div>
+        {(() => {
+          let portraitSrc = null;
+          try { portraitSrc = localStorage.getItem('sn_img_portrait'); } catch(e) {}
+          return portraitSrc
+            ? <img src={portraitSrc} alt="Portrait" style={{ width:'100%', height:'100%', objectFit:'cover', display:'block' }} />
+            : <div className="portrait"><div className="label">{c.portrait_label}</div></div>;
+        })()}
         <div style={{ position:'absolute', top:24, right:24, display:'flex', flexDirection:'column', alignItems:'flex-end', gap:6 }}>
           <span className="chip" style={{ background:'rgba(255,255,255,0.92)' }}>FILE · sn-2026.001</span>
           <span className="chip" style={{ background:'rgba(255,255,255,0.92)' }}>04 / 05 · MX</span>
@@ -61,7 +65,9 @@ function HomePage({ go }) {
         </div>
         <div style={{ position:'absolute', right:24, bottom:24, color:'#f4f1ea', textAlign:'right' }}>
           <div className="display" style={{ fontSize:64, lineHeight:0.9 }}>
-            Brand<br />Voice<span style={{ color:'var(--accent)' }}>.</span>
+            {(c.overlay_display || 'Brand\nVoice').split('\n').map((l,i,arr) =>
+              <span key={i}>{l}{i < arr.length-1 && <br/>}</span>
+            )}<span style={{ color:'var(--accent)' }}>.</span>
           </div>
           <div className="mono" style={{ opacity:.85, marginTop:6 }}>{c.overlay_sub}</div>
         </div>
