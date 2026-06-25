@@ -1,363 +1,1014 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="es">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Santiago Navarro — Creative Director & Copywriter</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,900;1,9..40,500;1,9..40,900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400;1,9..144,600&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Santiago Navarro - Copywriter & Creative Director</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,300;0,400;0,700;0,800;1,300;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 <style>
-  /* Local brand fonts — drop new files in assets/fonts/ and register in FONT_REGISTRY (app.jsx) */
-  @font-face { font-family: 'RF Rufo'; src: url('assets/fonts/RFRufo-Regular.ttf') format('truetype'); font-weight: 400; font-display: swap; }
-  @font-face { font-family: 'RF Rufo'; src: url('assets/fonts/RFRufo-Semibold.ttf') format('truetype'); font-weight: 600; font-display: swap; }
-  @font-face { font-family: 'RF Rufo'; src: url('assets/fonts/RFRufo-Bold.ttf') format('truetype'); font-weight: 700; font-display: swap; }
-  @font-face { font-family: 'RF Rufo'; src: url('assets/fonts/RFRufo-Black.ttf') format('truetype'); font-weight: 900; font-display: swap; }
-  @font-face { font-family: 'DM Sans Local'; src: url('assets/fonts/DMSans-Regular.ttf') format('truetype'); font-weight: 400; font-display: swap; }
-  @font-face { font-family: 'DM Sans Local'; src: url('assets/fonts/DMSans-Medium.ttf') format('truetype'); font-weight: 500; font-display: swap; }
-  @font-face { font-family: 'DM Sans Local'; src: url('assets/fonts/DMSans-Bold.ttf') format('truetype'); font-weight: 700; font-display: swap; }
-  @font-face { font-family: 'DM Sans Local'; src: url('assets/fonts/DMSans-Black.ttf') format('truetype'); font-weight: 900; font-display: swap; }
-  @font-face { font-family: 'Recoleta'; src: url('assets/fonts/Recoleta-SemiBold.otf') format('opentype'); font-weight: 600; font-display: swap; }
-</style>
-<style>
-  :root {
-    --ink: #0e0e10;
-    --ink-soft: #1a1a1d;
-    --canvas: #f4f1ea;
-    --cloud: #e7e3d8;
-    --hairline: #c9c5b8;
-    --mute: #6f6c63;
-    --stone: #9c988c;
-    --signal: #ff3b1f;
-    --accent: var(--signal);
+/* TOKENS */
+:root {
+  --ink:      #0e0e10;
+  --bg:       #f4f1ea;
+  --surface:  #ece8de;
+  --line:     rgba(14,14,16,0.1);
+  --mute:     #6f6c63;
+  --stone:    #9c988c;
+  --accent:   #c4714a;
+  --accent2:  #ff3b1f;
+  --f-disp:   'Barlow Condensed', sans-serif;
+  --f-body:   'DM Sans', sans-serif;
+  --f-mono:   'JetBrains Mono', monospace;
+  --max:      1200px;
+  --gutter:   clamp(1.5rem, 5vw, 4rem);
+}
 
-    --display: 'Bebas Neue', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    --serif: 'Fraunces', Georgia, serif;
-    --sans: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    --mono: 'JetBrains Mono', ui-monospace, Menlo, monospace;
-  }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--f-body);
+  font-size: clamp(15px, 1.5vw, 17px);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+img { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
 
-  *, *::before, *::after { box-sizing: border-box; }
-  html, body { margin:0; padding:0; height:100%; overflow:hidden; }
-  body {
-    font-family: var(--sans);
-    background: var(--canvas);
-    color: var(--ink);
-    -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
-  }
+/* GRAIN OVERLAY */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 999;
+  opacity: 0.38;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.07 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
 
-  /* App shell */
-  .stage {
-    position: fixed; inset: 0;
-    overflow: hidden;
-    background:
-      radial-gradient(1200px 700px at 80% 110%, rgba(255,59,31,0.08), transparent 60%),
-      radial-gradient(900px 600px at 5% -10%, rgba(14,14,16,0.08), transparent 60%),
-      var(--canvas);
-  }
+/* LAYOUT */
+.wrap { max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); }
+section { padding: clamp(5rem, 9vw, 8rem) 0; }
+.divider { border: none; border-top: 1px solid var(--line); margin: 0; }
 
-  /* Grain */
-  .grain {
-    position:absolute; inset:0; pointer-events:none; opacity:.5; mix-blend-mode:multiply;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.06 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
-  }
+/* MONO LABEL */
+.label-mono {
+  font-family: var(--f-mono);
+  font-size: 10px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--mute);
+}
+.label-mono.accent { color: var(--accent); }
 
-  /* Top bar */
-  .topbar {
-    position:absolute; top:0; left:0; right:0; height:56px;
-    display:flex; align-items:center; justify-content:space-between;
-    padding: 0 28px;
-    z-index: 30;
-    font-family: var(--mono);
-    font-size: 11px;
-    letter-spacing: .12em;
-    text-transform: uppercase;
-    color: var(--ink);
-  }
-  .topbar .grp { display:flex; gap:24px; align-items:center; }
-  .topbar .dot { width:6px; height:6px; border-radius:999px; background: var(--accent); display:inline-block; box-shadow:0 0 0 4px rgba(255,59,31,0.15); }
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 1.1rem var(--gutter);
+  display: flex; justify-content: space-between; align-items: center;
+  background: rgba(244,241,234,0.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--line);
+}
+.nav-logo {
+  font-family: var(--f-disp);
+  font-weight: 800;
+  font-size: 1rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.nav-logo-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 4px rgba(196,113,74,0.18);
+  display: inline-block;
+}
+.nav-links {
+  display: flex; gap: 1.8rem; list-style: none;
+}
+.nav-links a {
+  font-family: var(--f-mono);
+  font-size: 9px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--mute);
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--ink); }
+.nav-toggle {
+  display: none; flex-direction: column; gap: 5px;
+  cursor: pointer; background: none; border: none; padding: 4px;
+}
+.nav-toggle span { display: block; width: 22px; height: 1px; background: var(--ink); transition: transform .3s, opacity .3s; }
 
-  /* Bottom rail */
-  .bottombar {
-    position:absolute; bottom:0; left:0; right:0; height:48px;
-    display:flex; align-items:center; justify-content:space-between;
-    padding: 0 28px;
-    z-index: 30;
-    font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: .14em;
-    text-transform: uppercase;
-    color: var(--mute);
+@media (max-width: 640px) {
+  .nav-toggle { display: flex; }
+  .nav-links {
+    display: none; position: absolute; top: 100%; left: 0; right: 0;
+    flex-direction: column; gap: 0;
+    background: var(--bg); border-bottom: 1px solid var(--line);
+    padding: 1rem var(--gutter);
   }
+  .nav-links.open { display: flex; }
+  .nav-links li { padding: .6rem 0; border-bottom: 1px solid var(--line); }
+  .nav-links li:last-child { border-bottom: none; }
+  .nav-links a { font-size: 11px; }
+}
 
-  /* Side ticks (technological frame) */
-  .tickL, .tickR {
-    position:absolute; top:80px; bottom:80px; width:14px; z-index:10;
-    pointer-events:none;
-  }
-  .tickL { left: 14px; border-left: 1px solid var(--hairline); }
-  .tickR { right: 14px; border-right: 1px solid var(--hairline); }
-  .tickL::before, .tickR::before, .tickL::after, .tickR::after {
-    content:""; position:absolute; left:0; right:0; height:1px; background: var(--hairline);
-  }
-  .tickL::before, .tickR::before { top:0; }
-  .tickL::after, .tickR::after { bottom:0; }
+/* HERO */
+#hero {
+  min-height: 100svh;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  align-items: end;
+  padding-top: 5rem;
+  padding-bottom: clamp(3rem, 6vw, 5rem);
+  position: relative;
+  overflow: hidden;
+}
 
-  /* Floating 3D-ish objects */
-  .orb {
-    position:absolute; border-radius:50%;
-    filter: blur(0.3px);
-    will-change: transform;
-  }
-  .orb.a {
-    width: 320px; height: 320px;
-    left: -80px; top: 24%;
-    background:
-      radial-gradient(circle at 30% 25%, #ffffff 0%, #ff7a5e 18%, #ff3b1f 38%, #7a0a00 75%, #2a0300 100%);
-    box-shadow: 40px 40px 80px rgba(122,10,0,0.15);
-    animation: floatA 14s ease-in-out infinite;
-  }
-  .orb.b {
-    width: 220px; height: 220px;
-    right: 4%; top: 12%;
-    background:
-      radial-gradient(circle at 30% 25%, #ffffff 0%, #d9d3c1 18%, #6a665a 55%, #16161a 100%);
-    box-shadow: -30px 40px 80px rgba(0,0,0,0.18);
-    animation: floatB 18s ease-in-out infinite;
-  }
-  .orb.c {
-    width: 140px; height: 140px;
-    right: 10%; bottom: 10%;
-    background:
-      radial-gradient(circle at 35% 30%, #ffffff 0%, #f4f1ea 30%, #c9c5b8 60%, #6f6c63 100%);
-    box-shadow: 0 24px 48px rgba(0,0,0,0.1);
-    animation: floatC 22s ease-in-out infinite;
-  }
-  .pillshape {
-    position:absolute;
-    width: 460px; height: 80px;
-    border-radius: 9999px;
-    background: linear-gradient(110deg, var(--ink) 0%, #2a2a2e 60%, #555 100%);
-    transform: rotate(-22deg);
-    left: -120px; bottom: 14%;
-    box-shadow: 40px 40px 100px rgba(0,0,0,0.18);
-    opacity: .92;
-    animation: floatA 20s ease-in-out infinite reverse;
-  }
+/* Orbs */
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  will-change: transform;
+  filter: blur(0.5px);
+}
+.orb-a {
+  width: clamp(240px, 32vw, 420px);
+  height: clamp(240px, 32vw, 420px);
+  right: -8%; top: 8%;
+  background: radial-gradient(circle at 30% 25%,
+    #ffffff 0%, #f0a882 14%, var(--accent) 35%, #7a2e10 72%, #2a0a00 100%);
+  box-shadow: 40px 40px 80px rgba(122,46,16,0.14);
+  animation: floatA 16s ease-in-out infinite;
+}
+.orb-b {
+  width: clamp(140px, 18vw, 260px);
+  height: clamp(140px, 18vw, 260px);
+  left: -4%; bottom: 18%;
+  background: radial-gradient(circle at 30% 25%,
+    #ffffff 0%, #d9d3c1 18%, #6a665a 55%, #16161a 100%);
+  box-shadow: -20px 30px 60px rgba(0,0,0,0.14);
+  animation: floatB 20s ease-in-out infinite;
+}
+.pill-shape {
+  position: absolute;
+  width: clamp(280px, 40vw, 520px);
+  height: 70px;
+  border-radius: 9999px;
+  background: linear-gradient(110deg, var(--ink) 0%, #2a2a2e 60%, #555 100%);
+  transform: rotate(-20deg);
+  right: -5%; bottom: 12%;
+  opacity: .85;
+  animation: floatA 22s ease-in-out infinite reverse;
+}
 
-  @keyframes floatA {
-    0%,100% { transform: translateY(0) translateX(0) rotate(-22deg); }
-    50% { transform: translateY(-22px) translateX(14px) rotate(-22deg); }
-  }
-  @keyframes floatB {
-    0%,100% { transform: translateY(0) translateX(0); }
-    50% { transform: translateY(18px) translateX(-12px); }
-  }
-  @keyframes floatC {
-    0%,100% { transform: translateY(0) translateX(0); }
-    50% { transform: translateY(-14px) translateX(10px); }
-  }
+/* Geo SVG hero */
+.hero-geo {
+  position: absolute; inset: 0;
+  pointer-events: none; overflow: hidden;
+}
 
-  /* Brand graphic floating background — separate keyframes so we can carry a per-element rotation via --brot */
-  @keyframes bgFloatA {
-    0%,100% { transform: translate(0,0) rotate(var(--brot,0deg)); }
-    50%     { transform: translate(14px,-22px) rotate(var(--brot,0deg)); }
-  }
-  @keyframes bgFloatB {
-    0%,100% { transform: translate(0,0) rotate(var(--brot,0deg)); }
-    50%     { transform: translate(-12px,18px) rotate(var(--brot,0deg)); }
-  }
-  @keyframes bgFloatC {
-    0%,100% { transform: translate(0,0) rotate(var(--brot,0deg)); }
-    50%     { transform: translate(10px,-14px) rotate(var(--brot,0deg)); }
-  }
+@keyframes floatA {
+  0%,100% { transform: translateY(0) translateX(0) rotate(-20deg); }
+  50% { transform: translateY(-22px) translateX(12px) rotate(-20deg); }
+}
+@keyframes floatB {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(18px) translateX(-10px); }
+}
+@keyframes floatOrb {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+}
+.orb-a { animation: floatOrb 16s ease-in-out infinite; }
+.orb-b { animation: floatOrb 20s ease-in-out infinite reverse; }
 
-  .bg-graphic {
-    position: absolute;
-    pointer-events: none;
-    will-change: transform, opacity;
-    transition: opacity 500ms ease;
-  }
-  .bg-graphic.a { animation: bgFloatA 18s ease-in-out infinite; }
-  .bg-graphic.b { animation: bgFloatB 22s ease-in-out infinite; }
-  .bg-graphic.c { animation: bgFloatC 26s ease-in-out infinite; }
+.hero-inner { position: relative; z-index: 2; }
 
-  /* Capsule */
-  .capsule-wrap {
-    position:absolute; inset: 80px 56px 80px 56px;
-    display:flex; align-items:center; justify-content:center;
-    z-index: 20;
-  }
-  .capsule {
-    width: min(1320px, 100%);
-    height: 100%;
-    background: var(--canvas);
-    border-radius: 28px;
-    border: 1px solid var(--hairline);
-    box-shadow:
-      0 1px 0 rgba(255,255,255,0.6) inset,
-      0 30px 60px -20px rgba(0,0,0,0.18),
-      0 60px 120px -40px rgba(0,0,0,0.18);
-    overflow: hidden;
-    position: relative;
-    transform: translateZ(0);
-    /* Per-page font override — set via --page-font inline by App; cases supply their own brand-default fallback. */
-    font-family: var(--page-font, var(--sans));
-  }
-  .capsule.dark {
-    background: var(--ink);
-    color: #f4f1ea;
-    border-color: #2a2a2e;
-  }
+.hero-eyebrow {
+  font-family: var(--f-mono);
+  font-size: 10px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.4rem;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.hero-eyebrow::before {
+  content: '';
+  display: block;
+  width: 28px; height: 1px;
+  background: var(--accent);
+}
 
-  /* Capsule header strip (technological) */
-  .cap-head {
-    position:absolute; top:0; left:0; right:0; height:36px;
-    display:flex; align-items:center; justify-content:space-between;
-    padding: 0 18px;
-    border-bottom: 1px solid var(--hairline);
-    font-family: var(--mono);
-    font-size: 10px; letter-spacing:.14em; text-transform: uppercase;
-    color: var(--mute);
-    background: rgba(244,241,234,0.6);
-    backdrop-filter: blur(6px);
-    z-index: 5;
-  }
-  .capsule.dark .cap-head { border-color:#2a2a2e; background: rgba(14,14,16,0.6); color: var(--stone); }
-  .cap-head .lights { display:flex; gap:6px; }
-  .cap-head .lights span { width:8px; height:8px; border-radius:999px; background: var(--hairline); }
-  .cap-head .lights span:first-child { background: var(--accent); }
+h1.hero-title {
+  font-family: var(--f-disp);
+  font-weight: 800;
+  font-size: clamp(4.5rem, 13vw, 11rem);
+  line-height: .88;
+  letter-spacing: -.01em;
+  text-transform: uppercase;
+  margin-bottom: 2.2rem;
+}
+h1.hero-title em {
+  font-style: italic;
+  font-weight: 300;
+  color: var(--mute);
+}
+h1.hero-title .accent-dot { color: var(--accent); }
 
-  /* Pages mount inside .cap-body */
-  .cap-body { position:absolute; inset: 36px 0 0 0; }
+.hero-desc {
+  max-width: 480px;
+  color: var(--mute);
+  font-size: clamp(14px, 1.4vw, 16px);
+  line-height: 1.75;
+  margin-bottom: 2.5rem;
+}
 
-  /* Pill button */
-  .pill {
-    display:inline-flex; align-items:center; gap: 10px;
-    height: 44px; padding: 0 22px;
-    border-radius: 9999px;
-    font-family: var(--sans); font-weight: 600; font-size: 13px;
-    letter-spacing: .02em;
-    background: var(--ink); color: #f4f1ea;
-    border: 1px solid var(--ink);
-    cursor: pointer;
-    text-decoration: none;
-    transition: transform .15s ease, opacity .15s ease, background .2s ease;
-    user-select:none;
-  }
-  .pill:active { transform: scale(.97); opacity: .85; }
-  .pill.ghost { background: transparent; color: var(--ink); border-color: var(--ink); }
-  .pill.soft { background: var(--cloud); color: var(--ink); border-color: var(--cloud); }
-  .pill.sm { height: 34px; padding: 0 14px; font-size: 11px; }
-  .pill.xs { height: 28px; padding: 0 12px; font-size: 10.5px; letter-spacing:.06em; }
-  .pill .arr { display:inline-block; transform: translateY(-1px); }
+.hero-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: .75rem;
+  font-family: var(--f-disp);
+  font-weight: 700;
+  font-size: .85rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ink);
+  border-bottom: 1px solid var(--ink);
+  padding-bottom: .3rem;
+  transition: color .2s, border-color .2s;
+}
+.hero-cta:hover { color: var(--accent); border-color: var(--accent); }
+.hero-cta svg { transition: transform .2s; }
+.hero-cta:hover svg { transform: translateX(4px); }
 
-  /* Chip (mono) */
-  .chip {
-    display:inline-flex; align-items:center; gap: 6px;
-    height: 26px; padding: 0 10px;
-    border: 1px solid var(--hairline);
-    border-radius: 9999px;
-    font-family: var(--mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase;
-    color: var(--ink);
-    background: transparent;
-  }
+.hero-scroll-hint {
+  position: absolute;
+  bottom: 2.2rem; right: var(--gutter);
+  writing-mode: vertical-rl;
+  font-family: var(--f-mono);
+  font-size: 9px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--stone);
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+}
+.hero-scroll-hint::before {
+  content: '';
+  display: block;
+  width: 1px; height: 36px;
+  background: var(--stone);
+  opacity: .4;
+}
 
-  /* Display */
-  .display {
-    font-family: var(--display);
-    text-transform: uppercase;
-    line-height: 0.86;
-    letter-spacing: -0.005em;
-  }
+/* TICKER */
+.ticker-wrap {
+  overflow: hidden;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  background: var(--bg);
+  padding: .9rem 0;
+}
+.ticker-track {
+  display: inline-flex;
+  gap: 56px;
+  white-space: nowrap;
+  animation: ticker 38s linear infinite;
+  font-family: var(--f-disp);
+  font-weight: 800;
+  font-size: clamp(1.4rem, 3vw, 2.2rem);
+  text-transform: uppercase;
+  letter-spacing: .02em;
+  color: var(--ink);
+  align-items: center;
+}
+.ticker-track .sep { color: var(--accent); font-size: .6em; }
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
 
-  /* Editorial serif inline */
-  .ital { font-family: var(--serif); font-style: italic; font-weight: 400; }
+/* ABOUT */
+#about { background: var(--surface); }
 
-  /* Page mount — no animation; html-to-image clones reset @keyframes and capture at frame 0 */
-  .page-enter { opacity: 1; }
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.6fr;
+  gap: clamp(2rem, 6vw, 7rem);
+  align-items: start;
+}
+.about-sticky {
+  position: sticky;
+  top: 6rem;
+}
+.about-number {
+  font-family: var(--f-disp);
+  font-weight: 800;
+  font-size: clamp(6rem, 14vw, 12rem);
+  line-height: .85;
+  color: var(--line);
+  letter-spacing: -.02em;
+  margin-bottom: 1rem;
+  user-select: none;
+}
+.about-heading {
+  font-family: var(--f-disp);
+  font-weight: 800;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  text-transform: uppercase;
+  line-height: .98;
+  letter-spacing: .01em;
+}
+.about-body p {
+  color: var(--mute);
+  margin-bottom: 1.3rem;
+  max-width: 560px;
+}
+.about-body strong { color: var(--ink); font-weight: 500; }
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .45rem;
+  margin-top: 2rem;
+}
+.tag {
+  font-family: var(--f-mono);
+  font-size: 9px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--mute);
+  border: 1px solid var(--line);
+  padding: .35rem .9rem;
+}
 
-  /* Striped placeholder */
-  .stripe-ph {
-    background-image: repeating-linear-gradient(135deg, #d9d4c5 0 12px, #e9e5d8 12px 24px);
-    color: #6f6c63;
-    font-family: var(--mono); font-size: 10px; letter-spacing:.12em; text-transform: uppercase;
-    display:flex; align-items:center; justify-content:center;
-  }
+@media (max-width: 760px) {
+  .about-grid { grid-template-columns: 1fr; }
+  .about-sticky { position: static; }
+  .about-number { font-size: 5rem; }
+}
 
-  /* Marquee */
-  .marquee {
-    overflow: hidden; position: relative;
-    border-top: 1px solid var(--hairline);
-    border-bottom: 1px solid var(--hairline);
-    background: var(--canvas);
-  }
-  .marquee-track {
-    display: inline-flex;
-    gap: 56px;
-    padding: 14px 0;
-    animation: marquee 40s linear infinite;
-    white-space: nowrap;
-    font-family: var(--display);
-    text-transform: uppercase;
-    font-size: 28px;
-    color: var(--ink);
-    align-items:center;
-  }
-  .marquee-track .sep { color: var(--accent); }
-  @keyframes marquee {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
-  }
+/* SERVICES */
+#services { background: var(--ink); color: #f4f1ea; }
+#services .label-mono { color: rgba(156,152,140,.7); }
 
-  /* Scroll inside capsule areas */
-  .scroll {
-    overflow-y: auto;
-    scrollbar-width: thin;
-    scrollbar-color: var(--hairline) transparent;
-  }
-  .scroll::-webkit-scrollbar { width: 6px; }
-  .scroll::-webkit-scrollbar-thumb { background: var(--hairline); border-radius: 999px; }
+.services-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 3.5rem;
+  gap: 1rem;
+  flex-wrap: wrap;
+  border-bottom: 1px solid rgba(244,241,234,.08);
+  padding-bottom: 1.5rem;
+}
+.section-title {
+  font-family: var(--f-disp);
+  font-weight: 800;
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  text-transform: uppercase;
+  line-height: .95;
+}
+.services-list { list-style: none; }
+.service-item {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 2rem;
+  padding: 1.6rem 0;
+  border-bottom: 1px solid rgba(244,241,234,.08);
+  cursor: default;
+  transition: padding-left .25s;
+}
+.service-item:hover { padding-left: .8rem; }
+.service-name {
+  font-family: var(--f-disp);
+  font-weight: 800;
+  font-size: clamp(1.4rem, 3.2vw, 2.4rem);
+  text-transform: uppercase;
+  line-height: 1.05;
+}
+.service-note {
+  font-family: var(--f-mono);
+  font-size: 9px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: rgba(196,113,74,.8);
+  white-space: nowrap;
+  text-align: right;
+}
+@media (max-width: 500px) {
+  .service-item { flex-direction: column; gap: .3rem; }
+  .service-note { text-align: left; }
+}
 
-  /* Utility */
-  .mono { font-family: var(--mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; }
-  .hr { height:1px; background: var(--hairline); border:0; margin:0; }
-  .underline-link { color: inherit; text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+/* EXPERIENCE */
+#experience {}
+.exp-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 3rem;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.exp-list { list-style: none; }
+.exp-item {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 1rem 3rem;
+  align-items: start;
+  padding: 2rem 0;
+  border-bottom: 1px solid var(--line);
+}
+.exp-item:first-child { border-top: 1px solid var(--line); }
+.exp-role {
+  font-family: var(--f-disp);
+  font-weight: 800;
+  font-size: clamp(1.2rem, 2.5vw, 1.75rem);
+  text-transform: uppercase;
+  line-height: 1.05;
+  margin-bottom: .25rem;
+}
+.exp-company {
+  font-family: var(--f-mono);
+  font-size: 9px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: .65rem;
+}
+.exp-desc {
+  font-size: .88rem;
+  color: var(--mute);
+  max-width: 500px;
+  line-height: 1.6;
+}
+.exp-year {
+  font-family: var(--f-mono);
+  font-size: 9px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--stone);
+  white-space: nowrap;
+  padding-top: .4rem;
+}
+@media (max-width: 540px) {
+  .exp-item { grid-template-columns: 1fr; }
+  .exp-year { color: var(--accent); order: -1; }
+}
 
-  /* Portrait stripe placeholder */
-  .portrait {
-    width: 100%; height: 100%;
-    background:
-      linear-gradient(180deg, rgba(0,0,0,0.0) 60%, rgba(0,0,0,0.45) 100%),
-      repeating-linear-gradient(115deg, #2a2a2e 0 6px, #1a1a1d 6px 14px);
-    position: relative;
-  }
-  .portrait .label {
-    position:absolute; left:14px; bottom:14px;
-    font-family: var(--mono); font-size: 10px; letter-spacing:.16em;
-    color: #f4f1ea; text-transform: uppercase;
-    opacity: .9;
-  }
+/* PORTFOLIO */
+#portfolio {}
+.portfolio-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 0;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding-bottom: 2rem;
+}
+.portfolio-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5px;
+  background: var(--line);
+  border: 1.5px solid var(--line);
+}
+.portfolio-item {
+  background: var(--bg);
+  padding: clamp(1.8rem, 3vw, 2.8rem);
+  min-height: clamp(260px, 28vw, 340px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+  transition: background .25s;
+  cursor: default;
+}
+.portfolio-item:hover { background: var(--surface); }
+.portfolio-item-geo {
+  position: absolute;
+  bottom: -16px; right: -16px;
+  pointer-events: none;
+  opacity: .12;
+  transition: opacity .3s, transform .4s;
+}
+.portfolio-item:hover .portfolio-item-geo {
+  opacity: .22;
+  transform: scale(1.06) rotate(6deg);
+}
+.ptags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .35rem;
+  margin-bottom: auto;
+}
+.ptag {
+  font-family: var(--f-mono);
+  font-size: 9px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.portfolio-name {
+  font-family: var(--f-disp);
+  font-weight: 800;
+  font-size: clamp(1.5rem, 2.8vw, 2.2rem);
+  text-transform: uppercase;
+  line-height: 1;
+  margin-top: 2.5rem;
+  margin-bottom: .4rem;
+}
+.portfolio-copy {
+  font-family: var(--f-disp);
+  font-style: italic;
+  font-size: clamp(1.1rem, 1.8vw, 1.5rem);
+  color: var(--mute);
+  line-height: 1.15;
+  margin-bottom: .5rem;
+}
+.portfolio-desc {
+  font-size: .82rem;
+  color: var(--stone);
+  line-height: 1.5;
+}
+@media (max-width: 600px) {
+  .portfolio-grid { grid-template-columns: 1fr; }
+  .portfolio-item { min-height: 240px; }
+}
 
-  /* Scenes, used in case studies */
-  .scene-tonico { --canvas:#0a0a0c; --ink:#fffaf0; --cloud:#1a1a1d; --hairline:#2a2a2e; --mute:#9c988c; --accent:#ffd24a; }
-  .scene-modulo { --canvas:#fdfaf3; --ink:#0c2a3e; --cloud:#e3eef5; --hairline:#bcd0dc; --mute:#506a7a; --accent:#ff5a3d; }
-  .scene-arc    { --canvas:#eee9df; --ink:#2b2520; --cloud:#dcd5c5; --hairline:#bdb6a3; --mute:#766f63; --accent:#3a6a4f; }
+/* CONTACT */
+#contact {
+  background: var(--ink);
+  color: #f4f1ea;
+  text-align: center;
+  padding: clamp(5rem, 12vw, 10rem) 0;
+  position: relative;
+  overflow: hidden;
+}
+.contact-orb {
+  position: absolute;
+  width: clamp(300px, 40vw, 520px);
+  height: clamp(300px, 40vw, 520px);
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%,
+    rgba(196,113,74,.22) 0%, rgba(196,113,74,.06) 50%, transparent 70%);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+.contact-pre {
+  font-family: var(--f-mono);
+  font-size: 9px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: rgba(156,152,140,.7);
+  margin-bottom: 1.5rem;
+}
+.contact-heading {
+  font-family: var(--f-disp);
+  font-weight: 800;
+  font-size: clamp(4rem, 12vw, 10rem);
+  text-transform: uppercase;
+  line-height: .88;
+  margin-bottom: 2.5rem;
+  position: relative;
+}
+.contact-heading .dot { color: var(--accent); }
+.contact-email {
+  display: inline-block;
+  font-family: var(--f-disp);
+  font-weight: 700;
+  font-size: clamp(.95rem, 2vw, 1.4rem);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: #f4f1ea;
+  border-bottom: 1px solid rgba(244,241,234,.25);
+  padding-bottom: .3rem;
+  margin-bottom: 3rem;
+  transition: color .2s, border-color .2s;
+  position: relative;
+}
+.contact-email:hover { color: var(--accent); border-color: var(--accent); }
+.contact-social {
+  display: flex;
+  justify-content: center;
+  gap: 2.5rem;
+  list-style: none;
+}
+.contact-social a {
+  font-family: var(--f-mono);
+  font-size: 9px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: rgba(156,152,140,.6);
+  transition: color .2s;
+}
+.contact-social a:hover { color: #f4f1ea; }
+
+/* FOOTER */
+footer {
+  background: var(--ink);
+  border-top: 1px solid rgba(244,241,234,.07);
+  padding: 1.4rem var(--gutter);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: .5rem;
+}
+.footer-copy {
+  font-family: var(--f-mono);
+  font-size: 9px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: rgba(156,152,140,.45);
+}
+.footer-domain {
+  font-family: var(--f-disp);
+  font-weight: 800;
+  font-size: .75rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: rgba(244,241,234,.14);
+}
+
+/* REVEAL */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity .65s ease, transform .65s ease;
+}
+.reveal.up { transform: translateY(20px); }
+.reveal.visible { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; }
+}
 </style>
 </head>
 <body>
-  <div id="root"></div>
 
-  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
-  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
-  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="nav-logo">
+    <span class="nav-logo-dot"></span>
+    SN&thinsp;&middot;&thinsp;CC
+  </a>
+  <button class="nav-toggle" id="navToggle" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#about">About</a></li>
+    <li><a href="#services">Servicios</a></li>
+    <li><a href="#experience">Experiencia</a></li>
+    <li><a href="#portfolio">Portafolio</a></li>
+    <li><a href="#contact">Contacto</a></li>
+  </ul>
+</nav>
 
-  <script src="content.js"></script>
-  <script type="text/babel" src="tweaks-panel.jsx"></script>
-  <script type="text/babel" src="pages.jsx"></script>
-  <script type="text/babel" src="cases.jsx"></script>
-  <script type="text/babel" src="editor.jsx"></script>
-  <script type="text/babel" src="app.jsx"></script>
+<!-- HERO -->
+<section id="hero">
+
+  <!-- Orbs & shapes -->
+  <div class="orb orb-a" aria-hidden="true"></div>
+  <div class="orb orb-b" aria-hidden="true"></div>
+  <div class="pill-shape" aria-hidden="true"></div>
+
+  <!-- Geo lines -->
+  <div class="hero-geo" aria-hidden="true">
+    <svg width="100%" height="100%" viewBox="0 0 1400 900" fill="none" preserveAspectRatio="xMidYMid slice">
+      <circle cx="1100" cy="180" r="380" stroke="#1A1614" stroke-width="0.7" opacity="0.06"/>
+      <path d="M -80 820 A 420 420 0 0 1 380 440" stroke="#C4714A" stroke-width="0.7" opacity="0.15" fill="none"/>
+      <line x1="260" y1="0" x2="780" y2="900" stroke="#1A1614" stroke-width="0.5" opacity="0.05"/>
+      <circle cx="200" cy="380" r="4.5" fill="#C4714A" opacity="0.3"/>
+      <line x1="920" y1="660" x2="944" y2="684" stroke="#8C7B6B" stroke-width="0.9" opacity="0.28"/>
+      <line x1="944" y1="660" x2="920" y2="684" stroke="#8C7B6B" stroke-width="0.9" opacity="0.28"/>
+    </svg>
+  </div>
+
+  <div class="wrap hero-inner">
+    <p class="hero-eyebrow reveal">Monterrey, Mexico</p>
+    <h1 class="hero-title reveal">
+      Santiago<br/><em>Navarro</em><span class="accent-dot">.</span>
+    </h1>
+    <p class="hero-desc reveal">
+      Copywriter y Creative Director con mas de seis anos construyendo voces de marca, nombres y conceptos que le dan sentido a lo que las empresas quieren decir.
+    </p>
+    <a href="#services" class="hero-cta reveal">
+      Ver servicios
+      <svg width="16" height="10" viewBox="0 0 16 10" fill="none">
+        <path d="M0 5H14M10 1L14 5L10 9" stroke="currentColor" stroke-width="1.2"/>
+      </svg>
+    </a>
+  </div>
+
+  <div class="hero-scroll-hint" aria-hidden="true">Scroll</div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker-wrap" aria-hidden="true">
+  <div class="ticker-track">
+    <span>ALG Digital</span><span class="sep">&#x2736;</span>
+    <span>Mezcal Jurame</span><span class="sep">&#x2736;</span>
+    <span>ProTect</span><span class="sep">&#x2736;</span>
+    <span>Tonico Studio</span><span class="sep">&#x2736;</span>
+    <span>Fundacion FEMSA</span><span class="sep">&#x2736;</span>
+    <span>Brand Voice</span><span class="sep">&#x2736;</span>
+    <span>Naming</span><span class="sep">&#x2736;</span>
+    <span>Conceptualizacion</span><span class="sep">&#x2736;</span>
+    <!-- repeat for seamless loop -->
+    <span>ALG Digital</span><span class="sep">&#x2736;</span>
+    <span>Mezcal Jurame</span><span class="sep">&#x2736;</span>
+    <span>ProTect</span><span class="sep">&#x2736;</span>
+    <span>Tonico Studio</span><span class="sep">&#x2736;</span>
+    <span>Fundacion FEMSA</span><span class="sep">&#x2736;</span>
+    <span>Brand Voice</span><span class="sep">&#x2736;</span>
+    <span>Naming</span><span class="sep">&#x2736;</span>
+    <span>Conceptualizacion</span><span class="sep">&#x2736;</span>
+  </div>
+</div>
+
+<hr class="divider" />
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="wrap">
+    <div class="about-grid">
+      <div class="about-sticky">
+        <div class="about-number" aria-hidden="true">01</div>
+        <h2 class="about-heading reveal">About<br/>me</h2>
+      </div>
+      <div class="about-body">
+        <p class="label-mono accent reveal" style="margin-bottom:1.4rem;">Copywriter &rarr; Creative Director</p>
+        <p class="reveal">
+          Empece como copywriter porque siempre me parecio que las palabras son el material mas honesto con el que una marca puede construirse. Con el tiempo asumi la direccion creativa como extension natural: si puedo articular lo que una marca quiere decir, tambien puedo decidir como deberia verse y sonar.
+        </p>
+        <p class="reveal">
+          Hoy desarrollo <strong>brand voice, naming y conceptualizacion de campanas</strong> para marcas en industrias tan distintas como mezcal artesanal, educacion superior, comunicacion institucional y servicios creativos. Cada proyecto arranca desde el benchmark y termina en sistemas narrativos que el cliente puede operar solo.
+        </p>
+        <p class="reveal">
+          Fuera de la agencia, soy DJ bajo el alias <strong>Franz Nons</strong> y estoy construyendo <strong>Criteria</strong>, mi proyecto de consultoria creativa independiente.
+        </p>
+        <div class="tags reveal">
+          <span class="tag">Brand Voice</span>
+          <span class="tag">Naming</span>
+          <span class="tag">Conceptualizacion</span>
+          <span class="tag">Direccion Creativa</span>
+          <span class="tag">Benchmark</span>
+          <span class="tag">Project Management</span>
+          <span class="tag">Narrativa de Marca</span>
+          <span class="tag">Copy para Web</span>
+          <span class="tag">Espanol / Ingles</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="wrap">
+    <div class="services-header">
+      <h2 class="section-title reveal" style="color:#f4f1ea;">Servicios</h2>
+      <span class="label-mono reveal">Lo que hago</span>
+    </div>
+    <ul class="services-list">
+      <li class="service-item reveal">
+        <span class="service-name">Copywriting Estrategico</span>
+        <span class="service-note">Textos con intencion</span>
+      </li>
+      <li class="service-item reveal">
+        <span class="service-name">Naming &amp; Conceptualizacion</span>
+        <span class="service-note">Nombres que permanecen</span>
+      </li>
+      <li class="service-item reveal">
+        <span class="service-name">Brand Voice</span>
+        <span class="service-note">Tono, voz y personalidad</span>
+      </li>
+      <li class="service-item reveal">
+        <span class="service-name">Direccion Creativa</span>
+        <span class="service-note">Del concepto a la ejecucion</span>
+      </li>
+      <li class="service-item reveal">
+        <span class="service-name">Campanas Digitales</span>
+        <span class="service-note">Social, paid &amp; content</span>
+      </li>
+      <li class="service-item reveal">
+        <span class="service-name">Consultoria de Marca</span>
+        <span class="service-note">Estrategia a largo plazo</span>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<hr class="divider" style="border-color:rgba(244,241,234,.08);" />
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="wrap">
+    <div class="exp-header">
+      <h2 class="section-title reveal">Experiencia</h2>
+      <span class="label-mono reveal">5+ anos</span>
+    </div>
+    <ul class="exp-list">
+      <li class="exp-item reveal">
+        <div>
+          <p class="exp-role">Creative Director / Copywriter</p>
+          <p class="exp-company">ALG Digital</p>
+          <p class="exp-desc">Liderazgo de conceptualizacion de campanas y direccion creativa para marcas en multiples industrias. Desarrollo de benchmark, Brand DNA/Brand Voice y sistemas narrativos. Naming, slogans y coordinacion de equipo creativo.</p>
+        </div>
+        <span class="exp-year">2022 &ndash; presente</span>
+      </li>
+      <li class="exp-item reveal">
+        <div>
+          <p class="exp-role">Project Manager / Copywriter</p>
+          <p class="exp-company">ALG Digital</p>
+          <p class="exp-desc">Gestion end-to-end de proyectos: alcance, tiempos, coordinacion y entregas. Copy para branding, narrativa, mensajes clave, slogans y arquitectura de comunicacion.</p>
+        </div>
+        <span class="exp-year">2021 &ndash; 2022</span>
+      </li>
+      <li class="exp-item reveal">
+        <div>
+          <p class="exp-role">Copywriter / Creative Director (Freelance)</p>
+          <p class="exp-company">Tonico Studio</p>
+          <p class="exp-desc">Copy para redes sociales y web. Adaptacion y consistencia de tono de marca para clientes en retainer.</p>
+        </div>
+        <span class="exp-year">2022 &ndash; presente</span>
+      </li>
+      <li class="exp-item reveal">
+        <div>
+          <p class="exp-role">Copywriter (Freelance)</p>
+          <p class="exp-company">Modulo Marketing</p>
+          <p class="exp-desc">Copy para blogs y redes sociales.</p>
+        </div>
+        <span class="exp-year">2021 &ndash; presente</span>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- PORTFOLIO -->
+<section id="portfolio">
+  <div class="wrap">
+    <div class="portfolio-header">
+      <h2 class="section-title reveal">Portafolio</h2>
+      <span class="label-mono reveal">Casos seleccionados</span>
+    </div>
+  </div>
+  <div class="wrap" style="padding-left:0;padding-right:0;max-width:100%;">
+    <div class="portfolio-grid">
+
+      <div class="portfolio-item reveal">
+        <div class="ptags">
+          <span class="ptag">Social Media</span>
+          <span class="ptag">&middot;</span>
+          <span class="ptag">Paid Media</span>
+          <span class="ptag">&middot;</span>
+          <span class="ptag">ALG Digital</span>
+        </div>
+        <div>
+          <p class="portfolio-name">Mezcal Jurame</p>
+          <p class="portfolio-copy">&ldquo;El Alcohol Perfecto.&rdquo;</p>
+          <p class="portfolio-desc">Gestion integral desde 2020. Copywriting, direccion creativa, planeacion de contenido y Meta Ads. Presencia en Estacion Ipina, SLP y Festival del Vino.</p>
+        </div>
+        <svg class="portfolio-item-geo" width="170" height="170" viewBox="0 0 170 170" fill="none">
+          <circle cx="85" cy="85" r="75" stroke="#C4714A" stroke-width="1"/>
+          <circle cx="85" cy="85" r="50" stroke="#C4714A" stroke-width=".65"/>
+          <circle cx="85" cy="85" r="25" stroke="#C4714A" stroke-width=".4"/>
+        </svg>
+      </div>
+
+      <div class="portfolio-item reveal">
+        <div class="ptags">
+          <span class="ptag">Naming</span>
+          <span class="ptag">&middot;</span>
+          <span class="ptag">Brand DNA</span>
+          <span class="ptag">&middot;</span>
+          <span class="ptag">Tec de Monterrey</span>
+        </div>
+        <div>
+          <p class="portfolio-name">ProTect</p>
+          <p class="portfolio-copy">&ldquo;Porque tu seguridad es nuestra prioridad.&rdquo;</p>
+          <p class="portfolio-desc">Naming e identidad verbal para el Programa de Resguardo Organizacional del Tec. Hoy activo en todos los campus del pais.</p>
+        </div>
+        <svg class="portfolio-item-geo" width="170" height="170" viewBox="0 0 170 170" fill="none">
+          <rect x="14" y="14" width="142" height="142" stroke="#C4714A" stroke-width="1"/>
+          <rect x="40" y="40" width="90" height="90" stroke="#C4714A" stroke-width=".65"/>
+          <rect x="66" y="66" width="38" height="38" stroke="#C4714A" stroke-width=".4"/>
+        </svg>
+      </div>
+
+      <div class="portfolio-item reveal">
+        <div class="ptags">
+          <span class="ptag">Direccion Creativa</span>
+          <span class="ptag">&middot;</span>
+          <span class="ptag">Copy</span>
+          <span class="ptag">&middot;</span>
+          <span class="ptag">Freelance</span>
+        </div>
+        <div>
+          <p class="portfolio-name">Tonico Studio</p>
+          <p class="portfolio-copy">&ldquo;Anunciate aqui.&rdquo;</p>
+          <p class="portfolio-desc">Campana de adquisicion de leads. Concepto: ocupar el espacio publicitario vacio en redes para anunciar que ese espacio existe.</p>
+        </div>
+        <svg class="portfolio-item-geo" width="170" height="170" viewBox="0 0 170 170" fill="none">
+          <polygon points="85,10 160,140 10,140" stroke="#C4714A" stroke-width="1" fill="none"/>
+          <polygon points="85,38 133,122 37,122" stroke="#C4714A" stroke-width=".65" fill="none"/>
+          <polygon points="85,66 109,108 61,108" stroke="#C4714A" stroke-width=".4" fill="none"/>
+        </svg>
+      </div>
+
+      <div class="portfolio-item reveal">
+        <div class="ptags">
+          <span class="ptag">Conceptualizacion</span>
+          <span class="ptag">&middot;</span>
+          <span class="ptag">Informe Anual</span>
+          <span class="ptag">&middot;</span>
+          <span class="ptag">ALG Digital</span>
+        </div>
+        <div>
+          <p class="portfolio-name">Fundacion FEMSA</p>
+          <p class="portfolio-copy">&ldquo;Crecimos juntos.&rdquo;</p>
+          <p class="portfolio-desc">Concepto editorial para el Informe Anual 2021. +40M de personas en 13 paises.</p>
+        </div>
+        <svg class="portfolio-item-geo" width="170" height="170" viewBox="0 0 170 170" fill="none">
+          <path d="M 15 85 A 70 70 0 0 1 155 85" stroke="#C4714A" stroke-width="1" fill="none"/>
+          <path d="M 37 85 A 48 48 0 0 1 133 85" stroke="#C4714A" stroke-width=".65" fill="none"/>
+          <path d="M 59 85 A 26 26 0 0 1 111 85" stroke="#C4714A" stroke-width=".4" fill="none"/>
+        </svg>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-orb" aria-hidden="true"></div>
+  <div class="wrap" style="position:relative;z-index:1;">
+    <p class="contact-pre reveal">Tienes un proyecto?</p>
+    <h2 class="contact-heading reveal">
+      Hablemos<span class="dot">.</span>
+    </h2>
+    <a href="mailto:fcosantiago5@gmail.com" class="contact-email reveal">
+      fcosantiago5@gmail.com
+    </a>
+    <ul class="contact-social reveal">
+      <li><a href="https://linkedin.com/in/" target="_blank" rel="noopener">LinkedIn</a></li>
+      <li><a href="https://instagram.com/" target="_blank" rel="noopener">Instagram</a></li>
+      <li><a href="https://github.com/FranzNons" target="_blank" rel="noopener">GitHub</a></li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  <span class="footer-copy">&copy; 2025 Santiago Navarro</span>
+  <span class="footer-domain">santiagonavarro.cc</span>
+</footer>
+
+<script>
+  // Mobile nav
+  const toggle = document.getElementById('navToggle');
+  const navLinks = document.getElementById('navLinks');
+  toggle.addEventListener('click', () => navLinks.classList.toggle('open'));
+  navLinks.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => navLinks.classList.remove('open'));
+  });
+
+  // Scroll reveal
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
 </body>
 </html>
