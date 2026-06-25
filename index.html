@@ -6,6 +6,15 @@
   <title>Santiago Navarro - Copywriter & Creative Director</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <!-- Local fonts shared with portfolio repo -->
+  <style>
+    @font-face { font-family: 'RF Rufo'; src: url('assets/fonts/RFRufo-Regular.ttf') format('truetype'); font-weight: 400; font-display: swap; }
+    @font-face { font-family: 'RF Rufo'; src: url('assets/fonts/RFRufo-Semibold.ttf') format('truetype'); font-weight: 600; font-display: swap; }
+    @font-face { font-family: 'RF Rufo'; src: url('assets/fonts/RFRufo-Bold.ttf') format('truetype'); font-weight: 700; font-display: swap; }
+    @font-face { font-family: 'RF Rufo'; src: url('assets/fonts/RFRufo-Black.ttf') format('truetype'); font-weight: 900; font-display: swap; }
+    @font-face { font-family: 'Recoleta'; src: url('assets/fonts/Recoleta-SemiBold.otf') format('opentype'); font-weight: 600; font-display: swap; }
+  </style>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,300;0,400;0,700;0,800;1,300;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 <style>
 /* TOKENS */
@@ -504,6 +513,9 @@ h1.hero-title .accent-dot { color: var(--accent); }
   cursor: default;
 }
 .portfolio-item:hover { background: var(--surface); }
+.portfolio-item { cursor: pointer; }
+.portfolio-arrow { position: absolute; top: 1.6rem; right: 1.8rem; font-family: var(--f-mono); font-size: 9px; letter-spacing: .14em; text-transform: uppercase; color: var(--stone); transition: color .2s, transform .2s; }
+.portfolio-item:hover .portfolio-arrow { color: var(--accent); transform: translateX(3px); }
 .portfolio-item-geo {
   position: absolute;
   bottom: -16px; right: -16px;
@@ -662,6 +674,223 @@ footer {
 @media (prefers-reduced-motion: reduce) {
   .reveal { opacity: 1; transform: none; }
 }
+
+/* -- CASE MODALS --------------------------------------- */
+.modal-backdrop {
+  position: fixed; inset: 0; z-index: 1000;
+  background: rgba(14,14,16,.72);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  display: flex; align-items: center; justify-content: center;
+  padding: clamp(1rem, 3vw, 2rem);
+  opacity: 0; pointer-events: none;
+  transition: opacity .3s ease;
+}
+.modal-backdrop.open { opacity: 1; pointer-events: all; }
+
+.modal {
+  width: min(960px, 100%);
+  max-height: 90vh;
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  transform: translateY(20px) scale(.98);
+  transition: transform .35s cubic-bezier(.22,.9,.36,1);
+  box-shadow: 0 40px 100px rgba(0,0,0,.5);
+}
+.modal-backdrop.open .modal { transform: none; }
+
+/* close button */
+.modal-close {
+  position: absolute; top: 16px; right: 16px; z-index: 10;
+  width: 36px; height: 36px; border-radius: 50%;
+  background: rgba(0,0,0,.25);
+  border: 1px solid rgba(255,255,255,.15);
+  color: #fff; font-size: 18px; line-height: 1;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: background .2s;
+}
+.modal-close:hover { background: rgba(0,0,0,.45); }
+
+/* header band */
+.modal-header {
+  padding: clamp(1.6rem, 3vw, 2.4rem) clamp(1.6rem, 3vw, 2.8rem) clamp(1rem, 2vw, 1.6rem);
+  flex-shrink: 0;
+  display: flex; justify-content: space-between; align-items: flex-end; gap: 1.5rem;
+  position: relative; z-index: 2; overflow: hidden;
+}
+.modal-header-left { min-width: 0; }
+.modal-case-label {
+  font-family: var(--f-mono); font-size: 9px;
+  letter-spacing: .18em; text-transform: uppercase;
+  margin-bottom: 10px; opacity: .85;
+}
+.modal-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: clamp(2.2rem, 5vw, 4rem);
+  line-height: .92; letter-spacing: -.01em;
+  text-transform: uppercase;
+  margin: 0;
+}
+.modal-logo { height: clamp(40px, 6vw, 64px); width: auto; flex-shrink: 0; }
+
+/* body */
+.modal-body {
+  flex: 1; min-height: 0;
+  overflow-y: auto;
+  padding: clamp(1.2rem, 2.5vw, 2rem) clamp(1.6rem, 3vw, 2.8rem) clamp(1.6rem, 3vw, 2.4rem);
+  scrollbar-width: thin;
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  gap: clamp(1.2rem, 3vw, 2.5rem);
+  position: relative; z-index: 2;
+}
+@media (max-width: 640px) {
+  .modal-body { grid-template-columns: 1fr; }
+}
+
+/* meta grid */
+.modal-meta {
+  display: grid; grid-template-columns: auto 1fr;
+  gap: 5px 14px; font-size: 13px; line-height: 1.5;
+  margin-bottom: 1.2rem;
+}
+.modal-meta-key {
+  font-family: var(--f-mono); font-size: 9px;
+  letter-spacing: .14em; text-transform: uppercase; opacity: .6;
+  padding-top: .2em;
+}
+
+/* stat block */
+.modal-stat {
+  padding: 14px 16px;
+  display: flex; flex-direction: column; justify-content: space-between;
+  min-height: 90px;
+}
+.modal-stat-num {
+  font-weight: 900; font-size: 2.8rem; line-height: .88;
+}
+.modal-stat-label {
+  font-family: var(--f-mono); font-size: 9px;
+  letter-spacing: .14em; text-transform: uppercase; opacity: .7;
+  margin-top: 6px;
+}
+
+/* quote block */
+.modal-quote {
+  padding: clamp(1rem, 2vw, 1.4rem) clamp(1rem, 2vw, 1.6rem);
+  position: relative; overflow: hidden;
+  display: flex; flex-direction: column; justify-content: space-between;
+  gap: 1rem;
+}
+.modal-quote-text {
+  font-size: clamp(1rem, 1.8vw, 1.3rem);
+  line-height: 1.3; position: relative; z-index: 2;
+}
+.modal-quote-geo {
+  position: absolute; right: -16px; bottom: -16px;
+  width: clamp(100px, 18vw, 160px); opacity: .18;
+  pointer-events: none;
+}
+
+/* pillars list */
+.modal-pillars { list-style: none; padding: 0; }
+.modal-pillars li {
+  font-size: 13px; line-height: 1.5;
+  padding: 5px 0;
+  border-bottom: 1px solid rgba(0,0,0,.08);
+  display: flex; align-items: baseline; gap: 10px;
+}
+.modal-pillars li::before {
+  content: attr(data-n);
+  font-family: var(--f-mono); font-size: 9px;
+  letter-spacing: .1em; opacity: .5; flex-shrink: 0;
+}
+
+/* bg graphic */
+.modal-bg-graphic {
+  position: absolute; pointer-events: none;
+  opacity: .35; z-index: 1;
+}
+
+/* footer bar */
+.modal-footer {
+  flex-shrink: 0;
+  padding: 14px clamp(1.6rem, 3vw, 2.8rem);
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 1rem;
+  border-top: 1px solid rgba(0,0,0,.1);
+  font-family: var(--f-mono); font-size: 9px;
+  letter-spacing: .14em; text-transform: uppercase;
+  position: relative; z-index: 2;
+}
+
+/* -- PER-CASE THEMES -- */
+.modal[data-case="jurame"] {
+  --mc-bg: #f2f3f0; --mc-ink: #202d3f; --mc-hi: #ab8d3a;
+  background: var(--mc-bg); color: var(--mc-ink);
+}
+.modal[data-case="jurame"] .modal-header { background: var(--mc-bg); border-bottom: 1px solid rgba(32,45,63,.12); }
+.modal[data-case="jurame"] .modal-case-label { color: var(--mc-hi); }
+.modal[data-case="jurame"] .modal-title { font-family: 'RF Rufo', serif; font-size: clamp(2rem, 4.5vw, 3.4rem); }
+.modal[data-case="jurame"] .modal-stat { background: #fff; border: 1px solid rgba(32,45,63,.12); }
+.modal[data-case="jurame"] .modal-stat-num { font-family: 'RF Rufo', serif; color: var(--mc-ink); }
+.modal[data-case="jurame"] .modal-stat-num span { color: var(--mc-hi); }
+.modal[data-case="jurame"] .modal-lema { background: var(--mc-hi); color: var(--mc-ink); }
+.modal[data-case="jurame"] .modal-quote { background: var(--mc-ink); color: var(--mc-bg); }
+.modal[data-case="jurame"] .modal-quote-text { font-family: 'RF Rufo', serif; font-weight: 400; }
+.modal[data-case="jurame"] .modal-quote-text em { color: var(--mc-hi); font-style: normal; }
+.modal[data-case="jurame"] .modal-footer { background: var(--mc-bg); color: var(--mc-hi); border-color: rgba(32,45,63,.12); }
+
+.modal[data-case="protect"] {
+  --mc-bg: #0054D1; --mc-ink: #ffffff; --mc-hi: #00DC50; --mc-deep: #001a44;
+  background: var(--mc-bg); color: var(--mc-ink);
+}
+.modal[data-case="protect"] .modal-header { background: var(--mc-bg); border-bottom: 1px solid rgba(255,255,255,.12); }
+.modal[data-case="protect"] .modal-header::after { content:''; position:absolute; inset:0; background-image: linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px); background-size:40px 40px; pointer-events:none; }
+.modal[data-case="protect"] .modal-case-label { color: var(--mc-hi); }
+.modal[data-case="protect"] .modal-title { font-family: 'Barlow Condensed', sans-serif; }
+.modal[data-case="protect"] .modal-body { background: var(--mc-bg); background-image: linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px); background-size:40px 40px; }
+.modal[data-case="protect"] .modal-stat { background: var(--mc-deep); border: 1px solid rgba(255,255,255,.12); }
+.modal[data-case="protect"] .modal-stat-num { font-family: 'Barlow Condensed', sans-serif; font-weight:800; font-size:3rem; color: #fff; }
+.modal[data-case="protect"] .modal-stat-num span { color: var(--mc-hi); }
+.modal[data-case="protect"] .modal-quote { background: var(--mc-deep); color: var(--mc-ink); }
+.modal[data-case="protect"] .modal-quote-text { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; text-transform: uppercase; font-size: clamp(1.2rem, 2.2vw, 1.8rem); }
+.modal[data-case="protect"] .modal-footer { background: var(--mc-deep); color: var(--mc-hi); border-color: rgba(255,255,255,.1); }
+.modal[data-case="protect"] .modal-pillars li { border-color: rgba(255,255,255,.1); }
+.modal[data-case="protect"] .modal-meta-key { color: var(--mc-hi); opacity: 1; }
+
+.modal[data-case="tonico"] {
+  --mc-bg: #101010; --mc-ink: #fdfdfd; --mc-hi: #f7f56a;
+  background: var(--mc-bg); color: var(--mc-ink);
+}
+.modal[data-case="tonico"] .modal-header { background: var(--mc-bg); border-bottom: 1px solid rgba(253,253,253,.1); }
+.modal[data-case="tonico"] .modal-case-label { color: var(--mc-hi); }
+.modal[data-case="tonico"] .modal-title { font-family: 'DM Sans', sans-serif; font-weight: 900; letter-spacing: -.03em; }
+.modal[data-case="tonico"] .modal-stat { background: rgba(253,253,253,.06); border: 1px solid rgba(253,253,253,.1); }
+.modal[data-case="tonico"] .modal-stat-num { font-family: 'DM Sans', sans-serif; font-weight:900; color: #fff; }
+.modal[data-case="tonico"] .modal-stat-num span { color: var(--mc-hi); }
+.modal[data-case="tonico"] .modal-quote { background: var(--mc-hi); color: var(--mc-bg); }
+.modal[data-case="tonico"] .modal-quote-text { font-family: 'DM Sans', sans-serif; font-weight: 300; font-style: italic; }
+.modal[data-case="tonico"] .modal-footer { background: var(--mc-bg); color: var(--mc-hi); border-color: rgba(253,253,253,.1); }
+.modal[data-case="tonico"] .modal-pillars li { border-color: rgba(253,253,253,.1); color: rgba(253,253,253,.8); }
+.modal[data-case="tonico"] .modal-meta-key { color: var(--mc-hi); opacity: 1; }
+
+.modal[data-case="femsa"] {
+  --mc-bg: #cecece; --mc-ink: #0a0a0a; --mc-hi: #ffe944; --mc-soft: #e5e5e5;
+  background: var(--mc-bg); color: var(--mc-ink);
+}
+.modal[data-case="femsa"] .modal-header { background: var(--mc-bg); border-bottom: 1px solid rgba(10,10,10,.15); }
+.modal[data-case="femsa"] .modal-case-label { opacity: .65; }
+.modal[data-case="femsa"] .modal-title { font-family: 'Recoleta', serif; }
+.modal[data-case="femsa"] .modal-stat { background: var(--mc-soft); border: 1px solid rgba(10,10,10,.12); }
+.modal[data-case="femsa"] .modal-stat-num { font-family: 'Recoleta', serif; font-weight:600; color: var(--mc-ink); }
+.modal[data-case="femsa"] .modal-quote { background: var(--mc-hi); color: var(--mc-ink); }
+.modal[data-case="femsa"] .modal-quote-text { font-family: 'Recoleta', serif; font-weight: 600; font-style: italic; }
+.modal[data-case="femsa"] .modal-footer { background: var(--mc-bg); opacity: .7; border-color: rgba(10,10,10,.12); }
 </style>
 </head>
 <body>
@@ -710,7 +939,7 @@ footer {
       Santiago<br/><em>Navarro</em><span class="accent-dot">.</span>
     </h1>
     <p class="hero-desc reveal">
-      Copywriter y Creative Director con mas de seis anos construyendo voces de marca, nombres y conceptos que le dan sentido a lo que las empresas quieren decir.
+      Copywriter y Creative Director con más de seis anos construyendo voces de marca, nombres y conceptos que le dan sentido a lo que las empresas quieren decir.
     </p>
     <a href="#services" class="hero-cta reveal">
       Ver servicios
@@ -759,24 +988,24 @@ footer {
       <div class="about-body">
         <p class="label-mono accent reveal" style="margin-bottom:1.4rem;">Copywriter &rarr; Creative Director</p>
         <p class="reveal">
-          Empece como copywriter porque siempre me parecio que las palabras son el material mas honesto con el que una marca puede construirse. Con el tiempo asumi la direccion creativa como extension natural: si puedo articular lo que una marca quiere decir, tambien puedo decidir como deberia verse y sonar.
+          Empecé como copywriter porque siempre me pareció que las palabras son el material más honesto con el que una marca puede construirse. Con el tiempo asumí la dirección creativa como extensión natural: si puedo articular lo que una marca quiere decir, también puedo decidir cómo debería verse y sonar.
         </p>
         <p class="reveal">
-          Hoy desarrollo <strong>brand voice, naming y conceptualizacion de campanas</strong> para marcas en industrias tan distintas como mezcal artesanal, educacion superior, comunicacion institucional y servicios creativos. Cada proyecto arranca desde el benchmark y termina en sistemas narrativos que el cliente puede operar solo.
+          Hoy desarrollo <strong>brand voice, naming y conceptualización de campañas</strong> para marcas en industrias tan distintas como mezcal artesanal, educación superior, comunicación institucional y servicios creativos. Cada proyecto arranca desde el benchmark y termina en sistemas narrativos que el cliente puede operar solo.
         </p>
         <p class="reveal">
-          Fuera de la agencia, soy DJ bajo el alias <strong>Franz Nons</strong> y estoy construyendo <strong>Criteria</strong>, mi proyecto de consultoria creativa independiente.
+          Fuera de la agencia, soy DJ bajo el alias <strong>Franz Nons</strong> y estoy construyendo <strong>Criteria</strong>, mi proyecto de consultoría creativa independiente.
         </p>
         <div class="tags reveal">
           <span class="tag">Brand Voice</span>
           <span class="tag">Naming</span>
-          <span class="tag">Conceptualizacion</span>
-          <span class="tag">Direccion Creativa</span>
+          <span class="tag">Conceptualización</span>
+          <span class="tag">Dirección Creativa</span>
           <span class="tag">Benchmark</span>
           <span class="tag">Project Management</span>
           <span class="tag">Narrativa de Marca</span>
           <span class="tag">Copy para Web</span>
-          <span class="tag">Espanol / Ingles</span>
+          <span class="tag">Español / Inglés</span>
         </div>
       </div>
     </div>
@@ -794,11 +1023,11 @@ footer {
     </div>
     <ul class="services-list">
       <li class="service-item reveal">
-        <span class="service-name">Copywriting Estrategico</span>
-        <span class="service-note">Textos con intencion</span>
+        <span class="service-name">Copywriting Estratégico</span>
+        <span class="service-note">Textos con intención</span>
       </li>
       <li class="service-item reveal">
-        <span class="service-name">Naming &amp; Conceptualizacion</span>
+        <span class="service-name">Naming &amp; Conceptualización</span>
         <span class="service-note">Nombres que permanecen</span>
       </li>
       <li class="service-item reveal">
@@ -806,15 +1035,15 @@ footer {
         <span class="service-note">Tono, voz y personalidad</span>
       </li>
       <li class="service-item reveal">
-        <span class="service-name">Direccion Creativa</span>
-        <span class="service-note">Del concepto a la ejecucion</span>
+        <span class="service-name">Dirección Creativa</span>
+        <span class="service-note">Del concepto a la ejecución</span>
       </li>
       <li class="service-item reveal">
-        <span class="service-name">Campanas Digitales</span>
+        <span class="service-name">Campañas Digitales</span>
         <span class="service-note">Social, paid &amp; content</span>
       </li>
       <li class="service-item reveal">
-        <span class="service-name">Consultoria de Marca</span>
+        <span class="service-name">Consultoría de Marca</span>
         <span class="service-note">Estrategia a largo plazo</span>
       </li>
     </ul>
@@ -828,14 +1057,14 @@ footer {
   <div class="wrap">
     <div class="exp-header">
       <h2 class="section-title reveal">Experiencia</h2>
-      <span class="label-mono reveal">5+ anos</span>
+      <span class="label-mono reveal">6+ años</span>
     </div>
     <ul class="exp-list">
       <li class="exp-item reveal">
         <div>
           <p class="exp-role">Creative Director / Copywriter</p>
           <p class="exp-company">ALG Digital</p>
-          <p class="exp-desc">Liderazgo de conceptualizacion de campanas y direccion creativa para marcas en multiples industrias. Desarrollo de benchmark, Brand DNA/Brand Voice y sistemas narrativos. Naming, slogans y coordinacion de equipo creativo.</p>
+          <p class="exp-desc">Liderazgo de conceptualización de campañas y dirección creativa para marcas en múltiples industrias. Benchmark, Brand DNA / Brand Voice, sistemas narrativos, naming, slogans y coordinación de equipo creativo.</p>
         </div>
         <span class="exp-year">2022 &ndash; presente</span>
       </li>
@@ -843,22 +1072,30 @@ footer {
         <div>
           <p class="exp-role">Project Manager / Copywriter</p>
           <p class="exp-company">ALG Digital</p>
-          <p class="exp-desc">Gestion end-to-end de proyectos: alcance, tiempos, coordinacion y entregas. Copy para branding, narrativa, mensajes clave, slogans y arquitectura de comunicacion.</p>
+          <p class="exp-desc">Gestión end-to-end de proyectos: alcance, tiempos, coordinación y entregas. Copy para branding, narrativa, mensajes clave y arquitectura de comunicación.</p>
         </div>
         <span class="exp-year">2021 &ndash; 2022</span>
       </li>
       <li class="exp-item reveal">
         <div>
+          <p class="exp-role">Copywriter</p>
+          <p class="exp-company">ALG Digital</p>
+          <p class="exp-desc">Redacción creativa para branding y contenidos digitales. Soporte a conceptualización y estrategia de comunicación.</p>
+        </div>
+        <span class="exp-year">Jun. 2020 &ndash; 2021</span>
+      </li>
+      <li class="exp-item reveal">
+        <div>
           <p class="exp-role">Copywriter / Creative Director (Freelance)</p>
           <p class="exp-company">Tonico Studio</p>
-          <p class="exp-desc">Copy para redes sociales y web. Adaptacion y consistencia de tono de marca para clientes en retainer.</p>
+          <p class="exp-desc">Copy para redes sociales y web. Adaptación y consistencia de tono de marca para clientes en retainer.</p>
         </div>
         <span class="exp-year">2022 &ndash; presente</span>
       </li>
       <li class="exp-item reveal">
         <div>
           <p class="exp-role">Copywriter (Freelance)</p>
-          <p class="exp-company">Modulo Marketing</p>
+          <p class="exp-company">Módulo Marketing</p>
           <p class="exp-desc">Copy para blogs y redes sociales.</p>
         </div>
         <span class="exp-year">2021 &ndash; presente</span>
@@ -880,7 +1117,8 @@ footer {
   <div class="wrap" style="padding-left:0;padding-right:0;max-width:100%;">
     <div class="portfolio-grid">
 
-      <div class="portfolio-item reveal">
+      <div class="portfolio-item reveal" data-case="jurame" role="button" tabindex="0" aria-label="Ver caso Mezcal Júrame">
+        <span class="portfolio-arrow">Ver caso &rarr;</span>
         <div class="ptags">
           <span class="ptag">Social Media</span>
           <span class="ptag">&middot;</span>
@@ -889,9 +1127,9 @@ footer {
           <span class="ptag">ALG Digital</span>
         </div>
         <div>
-          <p class="portfolio-name">Mezcal Jurame</p>
+          <p class="portfolio-name">Mezcal Júrame</p>
           <p class="portfolio-copy">&ldquo;El Alcohol Perfecto.&rdquo;</p>
-          <p class="portfolio-desc">Gestion integral desde 2020. Copywriting, direccion creativa, planeacion de contenido y Meta Ads. Presencia en Estacion Ipina, SLP y Festival del Vino.</p>
+          <p class="portfolio-desc">Gestión integral desde 2020. Copywriting, dirección creativa, planeación de contenido y Meta Ads. Presencia en Estación Ipiña, SLP y Festival del Vino.</p>
         </div>
         <svg class="portfolio-item-geo" width="170" height="170" viewBox="0 0 170 170" fill="none">
           <circle cx="85" cy="85" r="75" stroke="#C4714A" stroke-width="1"/>
@@ -900,7 +1138,8 @@ footer {
         </svg>
       </div>
 
-      <div class="portfolio-item reveal">
+      <div class="portfolio-item reveal" data-case="protect" role="button" tabindex="0" aria-label="Ver caso ProTect">
+        <span class="portfolio-arrow">Ver caso &rarr;</span>
         <div class="ptags">
           <span class="ptag">Naming</span>
           <span class="ptag">&middot;</span>
@@ -911,7 +1150,7 @@ footer {
         <div>
           <p class="portfolio-name">ProTect</p>
           <p class="portfolio-copy">&ldquo;Porque tu seguridad es nuestra prioridad.&rdquo;</p>
-          <p class="portfolio-desc">Naming e identidad verbal para el Programa de Resguardo Organizacional del Tec. Hoy activo en todos los campus del pais.</p>
+          <p class="portfolio-desc">Naming e identidad verbal para el Programa de Resguardo Organizacional del Tec. Hoy activo en todos los campus del país.</p>
         </div>
         <svg class="portfolio-item-geo" width="170" height="170" viewBox="0 0 170 170" fill="none">
           <rect x="14" y="14" width="142" height="142" stroke="#C4714A" stroke-width="1"/>
@@ -920,18 +1159,19 @@ footer {
         </svg>
       </div>
 
-      <div class="portfolio-item reveal">
+      <div class="portfolio-item reveal" data-case="tonico" role="button" tabindex="0" aria-label="Ver caso Tónico Studio">
+        <span class="portfolio-arrow">Ver caso &rarr;</span>
         <div class="ptags">
-          <span class="ptag">Direccion Creativa</span>
+          <span class="ptag">Dirección Creativa</span>
           <span class="ptag">&middot;</span>
           <span class="ptag">Copy</span>
           <span class="ptag">&middot;</span>
           <span class="ptag">Freelance</span>
         </div>
         <div>
-          <p class="portfolio-name">Tonico Studio</p>
+          <p class="portfolio-name">Tónico Studio</p>
           <p class="portfolio-copy">&ldquo;Anunciate aqui.&rdquo;</p>
-          <p class="portfolio-desc">Campana de adquisicion de leads. Concepto: ocupar el espacio publicitario vacio en redes para anunciar que ese espacio existe.</p>
+          <p class="portfolio-desc">Campaña de adquisición de leads. Concepto: ocupar el espacio publicitario vacío en redes para anunciar que ese espacio existe.</p>
         </div>
         <svg class="portfolio-item-geo" width="170" height="170" viewBox="0 0 170 170" fill="none">
           <polygon points="85,10 160,140 10,140" stroke="#C4714A" stroke-width="1" fill="none"/>
@@ -940,9 +1180,10 @@ footer {
         </svg>
       </div>
 
-      <div class="portfolio-item reveal">
+      <div class="portfolio-item reveal" data-case="femsa" role="button" tabindex="0" aria-label="Ver caso Fundación FEMSA">
+        <span class="portfolio-arrow">Ver caso &rarr;</span>
         <div class="ptags">
-          <span class="ptag">Conceptualizacion</span>
+          <span class="ptag">Conceptualización</span>
           <span class="ptag">&middot;</span>
           <span class="ptag">Informe Anual</span>
           <span class="ptag">&middot;</span>
@@ -951,7 +1192,7 @@ footer {
         <div>
           <p class="portfolio-name">Fundacion FEMSA</p>
           <p class="portfolio-copy">&ldquo;Crecimos juntos.&rdquo;</p>
-          <p class="portfolio-desc">Concepto editorial para el Informe Anual 2021. +40M de personas en 13 paises.</p>
+          <p class="portfolio-desc">Concepto editorial para el Informe Anual 2021. +40M de personas en 13 países.</p>
         </div>
         <svg class="portfolio-item-geo" width="170" height="170" viewBox="0 0 170 170" fill="none">
           <path d="M 15 85 A 70 70 0 0 1 155 85" stroke="#C4714A" stroke-width="1" fill="none"/>
@@ -970,7 +1211,7 @@ footer {
 <section id="contact">
   <div class="contact-orb" aria-hidden="true"></div>
   <div class="wrap" style="position:relative;z-index:1;">
-    <p class="contact-pre reveal">Tienes un proyecto?</p>
+    <p class="contact-pre reveal">¿Tienes un proyecto?</p>
     <h2 class="contact-heading reveal">
       Hablemos<span class="dot">.</span>
     </h2>
@@ -1009,6 +1250,320 @@ footer {
     });
   }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
   document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+  // Case modals
+  var backdrop = document.getElementById('modalBackdrop');
+  var allModals = backdrop ? backdrop.querySelectorAll('.modal') : [];
+
+  function openModal(caseId) {
+    if (!backdrop) return;
+    allModals.forEach(function(m) { m.hidden = true; });
+    var target = document.getElementById('modal-' + caseId);
+    if (!target) return;
+    target.hidden = false;
+    backdrop.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    if (!backdrop) return;
+    backdrop.classList.remove('open');
+    document.body.style.overflow = '';
+    setTimeout(function() {
+      allModals.forEach(function(m) { m.hidden = true; });
+    }, 320);
+  }
+
+  document.querySelectorAll('.portfolio-item[data-case]').forEach(function(card) {
+    card.addEventListener('click', function() { openModal(card.dataset.case); });
+    card.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openModal(card.dataset.case); }
+    });
+  });
+
+  if (backdrop) {
+    backdrop.addEventListener('click', function(e) {
+      if (e.target === backdrop) closeModal();
+    });
+    backdrop.querySelectorAll('.modal-close').forEach(function(btn) {
+      btn.addEventListener('click', closeModal);
+    });
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && backdrop && backdrop.classList.contains('open')) closeModal();
+  });
+
 </script>
+
+<!-- -- CASE MODALS -- -->
+<div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true">
+
+  <!-- JURAME -->
+  <div class="modal" data-case="jurame" id="modal-jurame" hidden>
+    <button class="modal-close" aria-label="Cerrar">&times;</button>
+    <img src="assets/jurame/agave.png" alt="" class="modal-bg-graphic" style="width:300px;right:-60px;top:-40px;opacity:.18;transform:rotate(-6deg);" />
+    <img src="assets/jurame/grecas-flechas.png" alt="" class="modal-bg-graphic" style="width:180px;left:-30px;bottom:40px;opacity:.22;" />
+
+    <div class="modal-header">
+      <div class="modal-header-left">
+        <p class="modal-case-label">Caso 03 · Mezcal Júrame · 2020 — Presente</p>
+        <h2 class="modal-title">Un mezcal que jura,<br/>no que promete.</h2>
+      </div>
+      <img src="assets/jurame/logo-blue.png" alt="Jurame" class="modal-logo" />
+    </div>
+
+    <div class="modal-body">
+      <div>
+        <p style="font-size:15px;line-height:1.55;margin-bottom:1.2rem;color:rgba(32,45,63,.8);">
+          Gestión integral de la cuenta desde 2020. Planeación mensual de contenido, dirección creativa, configuración y optimización de campañas de Meta Ads. Hoy como Director Creativo y COO, el proceso va de planeación a presentación a cliente.
+        </p>
+        <div class="modal-meta">
+          <span class="modal-meta-key">Rol</span><span>Dirección Creativa &middot; Copy &middot; Paid Media</span>
+          <span class="modal-meta-key">Equipo</span><span>ALG Digital &middot; cuenta activa</span>
+          <span class="modal-meta-key">Entregables</span><span>Brand Voice · Copy de etiqueta · Campañas · Naming</span>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:1rem;">
+          <div class="modal-stat" style="flex:1;min-width:130px;">
+            <div class="modal-stat-num">+62<span>%</span></div>
+            <div class="modal-stat-label">Venta directa &middot; primer ano</div>
+          </div>
+          <div class="modal-stat modal-lema" style="flex:1.2;min-width:160px;padding:14px 16px;position:relative;overflow:hidden;">
+            <img src="assets/jurame/corazon.png" alt="" style="position:absolute;right:-8px;top:-4px;width:80px;opacity:.25;" />
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;">Lema</div>
+            <div style="font-family:'RF Rufo',serif;font-weight:600;font-size:1.15rem;line-height:1.2;margin-top:10px;position:relative;">
+              Quien jura, no presume — cumple.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px;">
+        <div class="modal-quote">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:#ab8d3a;">Fig. 01 &mdash; Copy de etiqueta</div>
+          <p class="modal-quote-text">
+            &ldquo;Destilado por manos que saben esperar.<br/>
+            Embotellado por quienes <em>juraron no apurarse.</em>&rdquo;
+          </p>
+          <div style="display:flex;justify-content:space-between;align-items:flex-end;">
+            <img src="assets/jurame/logo-white.png" alt="" style="height:34px;" />
+            <span style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:#ab8d3a;opacity:.8;">EST. MMXXIII &middot; MX</span>
+          </div>
+          <img src="assets/jurame/agave.png" alt="" class="modal-quote-geo" style="filter:brightness(2.5);" />
+        </div>
+        <div style="padding:14px 16px;background:#fff;border:1px solid rgba(32,45,63,.12);">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:#ab8d3a;margin-bottom:8px;">// Pilares narrativos</div>
+          <ul class="modal-pillars">
+            <li data-n="01">Lo que se jura, se cumple. Lento.</li>
+            <li data-n="02">El altiplano no se apura. Nosotros tampoco.</li>
+            <li data-n="03">El agave guarda memoria; nosotros la embotellamos.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <span>Caso 03 de 04 · Mezcal Júrame</span>
+      <span>jurame.mx</span>
+    </div>
+  </div>
+
+  <!-- PROTECT -->
+  <div class="modal" data-case="protect" id="modal-protect" hidden>
+    <button class="modal-close" aria-label="Cerrar">&times;</button>
+
+    <div class="modal-header">
+      <div class="modal-header-left">
+        <p class="modal-case-label">Case 04 &middot; ProTect &middot; Tec de Monterrey &middot; 2024</p>
+        <h2 class="modal-title">Security that speaks<br/>before it sells.</h2>
+      </div>
+      <div style="display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border:1px solid rgba(255,255,255,.35);border-radius:9999px;flex-shrink:0;">
+        <span style="width:7px;height:7px;border-radius:50%;background:#00DC50;box-shadow:0 0 0 4px rgba(0,220,80,.25);"></span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:#fff;">PROTECT &middot; LIVE</span>
+      </div>
+    </div>
+
+    <div class="modal-body">
+      <div>
+        <p style="font-size:15px;line-height:1.55;margin-bottom:1.2rem;color:rgba(255,255,255,.8);">
+          Naming e identidad verbal para el Programa de Resguardo Organizacional del Tec de Monterrey. Hoy los oficiales de seguridad son reconocidos como "Oficial ProTect" en todos los campus del país.
+        </p>
+        <div class="modal-meta">
+          <span class="modal-meta-key">Rol</span><span>Naming · Brand DNA · Conceptualización</span>
+          <span class="modal-meta-key">Via</span><span>ALG Digital</span>
+          <span class="modal-meta-key">Alcance</span><span>Todos los campus Tec del pais</span>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:1rem;">
+          <div class="modal-stat" style="flex:1;min-width:130px;">
+            <div class="modal-stat-num">&minus;41<span>%</span></div>
+            <div class="modal-stat-label">CAC after rebrand</div>
+          </div>
+          <div class="modal-stat" style="flex:1;min-width:130px;background:#00DC50;color:#001a44;">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:8px;">Naming &middot; Tiers</div>
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.5rem;line-height:1;">Watch &nbsp; Shield &nbsp; Vault</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9px;margin-top:6px;opacity:.7;">Three tiers, one verb each.</div>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px;">
+        <div class="modal-quote">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:#00DC50;margin-bottom:10px;">Fig. 01 &mdash; Dashboard hero</div>
+          <p class="modal-quote-text">ALL CLEAR.<br/>NO ACTION NEEDED.</p>
+          <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:5px;margin-top:10px;">
+            <div style="padding:5px 7px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.08em;">ENDPOINTS &middot; 42</div>
+            <div style="padding:5px 7px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.08em;">THREATS &middot; 0</div>
+          </div>
+        </div>
+        <div style="padding:14px 16px;background:rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.1);">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:#00DC50;margin-bottom:8px;">// Voice pillars</div>
+          <ul class="modal-pillars">
+            <li data-n="01">Signal, not noise. One claim per screen.</li>
+            <li data-n="02">Plain over clever. Technical only when it earns its place.</li>
+            <li data-n="03">We protect &mdash; we don't warn.</li>
+            <li data-n="04">Words an owner says out loud.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <span>Case 04 &middot; ProTect &middot; Tec de Monterrey</span>
+      <span>protect.tec.mx</span>
+    </div>
+  </div>
+
+  <!-- TONICO -->
+  <div class="modal" data-case="tonico" id="modal-tonico" hidden>
+    <button class="modal-close" aria-label="Cerrar">&times;</button>
+    <img src="assets/tonico/graphic1.svg" alt="" class="modal-bg-graphic" style="width:320px;right:-60px;top:-20px;opacity:.06;" />
+
+    <div class="modal-header">
+      <div class="modal-header-left">
+        <p class="modal-case-label">Case 05 &middot; Tonico Studio &middot; 2022 &mdash; Present</p>
+        <h2 class="modal-title">Form first. Words second.<br/>Silence &mdash; when in doubt.</h2>
+      </div>
+      <img src="assets/tonico/logo.svg" alt="Tonico" class="modal-logo" style="filter:invert(1);height:30px;" />
+    </div>
+
+    <div class="modal-body">
+      <div>
+        <p style="font-size:15px;line-height:1.55;margin-bottom:1.2rem;color:rgba(253,253,253,.75);font-weight:300;">
+          A boutique design studio with too much taste and not enough words. We wrote a voice that sounds like a studio, not an agency — low volume, high posture.
+        </p>
+        <div class="modal-meta">
+          <span class="modal-meta-key">Role</span><span>Copywriter &amp; Voice Lead</span>
+          <span class="modal-meta-key">Scope</span><span>Voice principles &middot; Site copy &middot; Editorial line</span>
+          <span class="modal-meta-key">Cadence</span><span>Retainer &middot; social + journal, weekly</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;margin-top:1.2rem;">
+          <div style="padding:10px 14px;border:1px solid rgba(253,253,253,.12);background:rgba(253,253,253,.04);font-size:13px;font-weight:300;color:rgba(253,253,253,.85);">
+            <span style="color:#f7f56a;font-family:'JetBrains Mono',monospace;font-size:9px;margin-right:6px;">"</span>We make objects you can read.
+          </div>
+          <div style="padding:10px 14px;border:1px solid rgba(253,253,253,.12);background:rgba(253,253,253,.04);font-size:13px;font-weight:300;color:rgba(253,253,253,.85);">
+            <span style="color:#f7f56a;font-family:'JetBrains Mono',monospace;font-size:9px;margin-right:6px;">"</span>Tónico — design as a small, exact gesture.
+          </div>
+          <div style="padding:10px 14px;border:1px solid rgba(253,253,253,.12);background:rgba(253,253,253,.04);font-size:13px;font-weight:300;color:rgba(253,253,253,.85);">
+            <span style="color:#f7f56a;font-family:'JetBrains Mono',monospace;font-size:9px;margin-right:6px;">"</span>We don't decorate. We arrive.
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px;">
+        <div class="modal-quote" style="position:relative;overflow:hidden;">
+          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:.9;">
+            <img src="assets/tonico/graphic2.svg" alt="" style="width:65%;height:auto;" />
+          </div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;position:relative;">Fig. 01 &mdash; Wordmark + glyph</div>
+          <div style="font-family:'DM Sans',sans-serif;font-weight:900;font-size:clamp(2rem,5vw,3.5rem);line-height:.88;text-align:right;position:relative;">
+            tonico<span style="font-style:italic;">.</span>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr auto;gap:14px;">
+          <div class="modal-stat">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:#f7f56a;">Metric &middot; qtr</div>
+            <div>
+              <div class="modal-stat-num">+38<span>%</span></div>
+              <div class="modal-stat-label">direct inquiries / qtr</div>
+            </div>
+          </div>
+          <div class="modal-stat" style="background:#fdfdfd;color:#101010;flex-shrink:0;max-width:140px;">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:#666;">Note</div>
+            <div style="font-family:'DM Sans',sans-serif;font-style:italic;font-weight:500;font-size:12px;line-height:1.35;margin-top:6px;">
+              Editorial line written to be <span style="background:#f7f56a;color:#101010;padding:0 3px;">read out loud.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <span>Case 05 &middot; Tonico Studio</span>
+      <span>tonicostudio.mx</span>
+    </div>
+  </div>
+
+  <!-- FEMSA -->
+  <div class="modal" data-case="femsa" id="modal-femsa" hidden>
+    <button class="modal-close" aria-label="Cerrar">&times;</button>
+    <img src="assets/femsa/g1.svg" alt="" class="modal-bg-graphic" style="width:200px;right:-30px;top:20px;opacity:.35;" />
+    <img src="assets/femsa/g2.svg" alt="" class="modal-bg-graphic" style="width:160px;left:-20px;bottom:60px;opacity:.3;transform:rotate(14deg);" />
+
+    <div class="modal-header">
+      <div class="modal-header-left">
+        <p class="modal-case-label">Caso 06 · Fundación FEMSA · 2024</p>
+        <h2 class="modal-title">Las fundaciones también<br/><span style="background:#ffe944;padding:0 8px;">tienen voz</span> propia.</h2>
+      </div>
+      <img src="assets/femsa/logo-black.png" alt="Fundacion FEMSA" class="modal-logo" />
+    </div>
+
+    <div class="modal-body">
+      <div>
+        <p style="font-size:15px;line-height:1.55;margin-bottom:1.2rem;color:rgba(10,10,10,.75);">
+          Concepto editorial para el Informe Anual 2021 de la fundación. Arquitectura narrativa para comunicación anual, plataformas sociales y materiales internos.
+        </p>
+        <div class="modal-meta">
+          <span class="modal-meta-key">Rol</span><span>Conceptualización · Redacción · Arq. narrativa</span>
+          <span class="modal-meta-key">Equipo</span><span>ALG Digital &middot; cliente directo</span>
+          <span class="modal-meta-key">Entregables</span><span>Manifesto &middot; Informe anual &middot; Pilares &middot; Voz para programas</span>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(10,10,10,.15);border:1px solid rgba(10,10,10,.15);margin-top:1.2rem;">
+          <div style="padding:14px;background:#e5e5e5;display:flex;flex-direction:column;justify-content:space-between;">
+            <div style="font-family:'Recoleta',serif;font-weight:600;font-size:2.8rem;line-height:.85;">11</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.12em;text-transform:uppercase;opacity:.6;margin-top:5px;">programas con voz propia</div>
+          </div>
+          <div style="padding:14px;background:#e5e5e5;display:flex;flex-direction:column;justify-content:space-between;">
+            <div style="font-family:'Recoleta',serif;font-weight:600;font-size:2.8rem;line-height:.85;">13</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.12em;text-transform:uppercase;opacity:.6;margin-top:5px;">paises</div>
+          </div>
+          <div style="padding:14px;background:#e5e5e5;display:flex;flex-direction:column;justify-content:space-between;">
+            <div style="font-family:'Recoleta',serif;font-weight:600;font-size:2.8rem;line-height:.85;">36</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.12em;text-transform:uppercase;opacity:.6;margin-top:5px;">paginas de informe</div>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px;">
+        <div class="modal-quote">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+            <span style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;">Fig. 01 &mdash; Manifesto pg. 1</span>
+            <img src="assets/femsa/g3.svg" alt="" style="height:30px;opacity:.5;" />
+          </div>
+          <p class="modal-quote-text">
+            &ldquo;Una fundacion no se mide en lo que dona, sino en lo que <span style="text-decoration:underline;text-decoration-style:wavy;">queda</span> cuando se va.&rdquo;
+          </p>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.14em;text-transform:uppercase;opacity:.7;">Informe anual &middot; 2024 &middot; pg. 14</div>
+        </div>
+        <div style="padding:14px 16px;background:#e5e5e5;border:1px solid rgba(10,10,10,.12);">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;opacity:.55;margin-bottom:8px;">// Pilares de voz</div>
+          <ul class="modal-pillars">
+            <li data-n="01">Larga vista. Hablamos en décadas, no en trimestres.</li>
+            <li data-n="02">Datos con cara. Cada número lleva una persona detrás.</li>
+            <li data-n="03">Sobria, no fria. Seriedad con afecto.</li>
+            <li data-n="04">Trabajo, no promesas. Lo dicho es lo hecho.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <span>Caso 06 · Fundación FEMSA</span>
+      <span>fundacionfemsa.org</span>
+    </div>
+  </div>
+
+</div><!-- end modal-backdrop -->
+
 </body>
 </html>
