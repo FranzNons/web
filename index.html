@@ -1231,69 +1231,7 @@ footer {
   <span class="footer-domain">santiagonavarro.cc</span>
 </footer>
 
-<script>
-  // Mobile nav
-  const toggle = document.getElementById('navToggle');
-  const navLinks = document.getElementById('navLinks');
-  toggle.addEventListener('click', () => navLinks.classList.toggle('open'));
-  navLinks.querySelectorAll('a').forEach(a => {
-    a.addEventListener('click', () => navLinks.classList.remove('open'));
-  });
 
-  // Scroll reveal
-  const obs = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('visible');
-        obs.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
-  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
-  // Case modals
-  var backdrop = document.getElementById('modalBackdrop');
-  var allModals = backdrop ? backdrop.querySelectorAll('.modal') : [];
-
-  function openModal(caseId) {
-    if (!backdrop) return;
-    allModals.forEach(function(m) { m.hidden = true; });
-    var target = document.getElementById('modal-' + caseId);
-    if (!target) return;
-    target.hidden = false;
-    backdrop.classList.add('open');
-    document.body.style.overflow = 'hidden';
-  }
-
-  function closeModal() {
-    if (!backdrop) return;
-    backdrop.classList.remove('open');
-    document.body.style.overflow = '';
-    setTimeout(function() {
-      allModals.forEach(function(m) { m.hidden = true; });
-    }, 320);
-  }
-
-  document.querySelectorAll('.portfolio-item[data-case]').forEach(function(card) {
-    card.addEventListener('click', function() { openModal(card.dataset.case); });
-    card.addEventListener('keydown', function(e) {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openModal(card.dataset.case); }
-    });
-  });
-
-  if (backdrop) {
-    backdrop.addEventListener('click', function(e) {
-      if (e.target === backdrop) closeModal();
-    });
-    backdrop.querySelectorAll('.modal-close').forEach(function(btn) {
-      btn.addEventListener('click', closeModal);
-    });
-  }
-
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape' && backdrop && backdrop.classList.contains('open')) closeModal();
-  });
-
-</script>
 
 <!-- -- CASE MODALS -- -->
 <div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true">
@@ -1565,5 +1503,68 @@ footer {
 
 </div><!-- end modal-backdrop -->
 
+<script>
+  // Mobile nav
+  const toggle = document.getElementById('navToggle');
+  const navLinks = document.getElementById('navLinks');
+  toggle.addEventListener('click', () => navLinks.classList.toggle('open'));
+  navLinks.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => navLinks.classList.remove('open'));
+  });
+
+  // Scroll reveal
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+  // Case modals
+  var backdrop = document.getElementById('modalBackdrop');
+  var allModals = backdrop ? backdrop.querySelectorAll('.modal') : [];
+
+  function openModal(caseId) {
+    if (!backdrop) return;
+    allModals.forEach(function(m) { m.hidden = true; });
+    var target = document.getElementById('modal-' + caseId);
+    if (!target) return;
+    target.hidden = false;
+    backdrop.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    if (!backdrop) return;
+    backdrop.classList.remove('open');
+    document.body.style.overflow = '';
+    setTimeout(function() {
+      allModals.forEach(function(m) { m.hidden = true; });
+    }, 320);
+  }
+
+  document.querySelectorAll('.portfolio-item[data-case]').forEach(function(card) {
+    card.addEventListener('click', function() { openModal(card.dataset.case); });
+    card.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openModal(card.dataset.case); }
+    });
+  });
+
+  if (backdrop) {
+    backdrop.addEventListener('click', function(e) {
+      if (e.target === backdrop) closeModal();
+    });
+    backdrop.querySelectorAll('.modal-close').forEach(function(btn) {
+      btn.addEventListener('click', closeModal);
+    });
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && backdrop && backdrop.classList.contains('open')) closeModal();
+  });
+
+</script>
 </body>
 </html>
